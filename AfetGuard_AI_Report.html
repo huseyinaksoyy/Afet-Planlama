@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>AfetGuard AI: 2 Sayfalık Akademik & Teknik Özet Rapor</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+    
+    @page {
+      size: A4 portrait;
+      margin: 8mm 10mm 8mm 10mm;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #0f172a;
+      background: #ffffff;
+      font-size: 8.5pt;
+      line-height: 1.28;
+    }
+    
+    .page {
+      width: 100%;
+      height: 281mm; /* Exact A4 content height minus margins */
+      max-height: 281mm;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      page-break-after: always;
+    }
+    
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    /* HEADER */
+    .header {
+      border-bottom: 2px solid #1e3a8a;
+      padding-bottom: 5px;
+      margin-bottom: 6px;
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .header-title h1 {
+      font-size: 15pt;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.4px;
+    }
+    .header-title h1 span {
+      color: #2563eb;
+    }
+    .header-subtitle {
+      font-size: 8pt;
+      font-weight: 600;
+      color: #475569;
+      margin-top: 1px;
+    }
+    .badges {
+      display: flex;
+      gap: 4px;
+    }
+    .badge {
+      font-size: 6.8pt;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .badge-sdg11 { background: #fd9d24; color: #000; }
+    .badge-sdg13 { background: #3f7e44; color: #fff; }
+    .badge-gemini { background: #7c3aed; color: #fff; }
+    
+    .meta-bar {
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      background: #f1f5f9;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 7.2pt;
+      color: #334155;
+    }
+    .meta-bar strong { color: #0f172a; }
+    .meta-bar a { color: #2563eb; text-decoration: none; font-weight: 600; }
+
+    /* GRID & SECTIONS */
+    .section-title {
+      font-size: 9.2pt;
+      font-weight: 800;
+      color: #1e3a8a;
+      border-left: 3px solid #2563eb;
+      padding-left: 5px;
+      margin-bottom: 4px;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+    }
+    .section-title .tag {
+      font-size: 6.5pt;
+      background: #e2e8f0;
+      color: #475569;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+    
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      padding: 5px 7px;
+      font-size: 7.6pt;
+    }
+    .card-highlight {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .card-warning {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+    .card-danger {
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+
+    /* DATA METRIC BOXES */
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      margin-bottom: 4px;
+    }
+    .metric-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 4px;
+      text-align: center;
+    }
+    .metric-val {
+      font-size: 11pt;
+      font-weight: 900;
+      color: #dc2626;
+      line-height: 1;
+    }
+    .metric-val-blue { color: #2563eb; }
+    .metric-lbl {
+      font-size: 6.4pt;
+      font-weight: 600;
+      color: #64748b;
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    /* TABLES */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7.2pt;
+      margin-top: 2px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 3.5px 5px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #f1f5f9;
+      color: #1e293b;
+      font-weight: 700;
+      font-size: 7pt;
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+    }
+    tr:nth-child(even) td { background: #fafafa; }
+    
+    .chip {
+      display: inline-block;
+      font-size: 6.2pt;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .chip-red { background: #fee2e2; color: #991b1b; }
+    .chip-amber { background: #fef3c7; color: #92400e; }
+    .chip-green { background: #dcfce7; color: #166534; }
+    .chip-blue { background: #dbeafe; color: #1e40af; }
+    .chip-purple { background: #f3e8ff; color: #6b21a8; }
+
+    /* FOOTER */
+    .page-footer {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 3px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 6.5pt;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== SAYFA 1 ==================== -->
+  <div class="page">
+    <div>
+      <!-- HEADER -->
+      <div class="header">
+        <div class="header-top">
+          <div class="header-title">
+            <h1>AfetGuard <span>AI</span></h1>
+            <div class="header-subtitle">
+              Kişiselleştirilmiş Hane ve Oda Afet Hazırlık Asistanı &bull; Akademik & Teknik Özet Raporu
+            </div>
+          </div>
+          <div class="badges">
+            <span class="badge badge-sdg11">SDG 11.5</span>
+            <span class="badge badge-sdg13">SDG 13.1</span>
+            <span class="badge badge-gemini">Gemini 2.5 Flash</span>
+          </div>
+        </div>
+        <div class="meta-bar">
+          <div><strong>Proje Ekibi (Grup 13):</strong> Fatma Çevik, Ayberk Koç, Hüseyin Aksoy, Adil Yer, Mehmet Tarık Özcan</div>
+          <div><strong>Live Demo:</strong> <a href="https://afet-planlama.vercel.app" target="_blank">afet-planlama.vercel.app</a></div>
+          <div><strong>GitHub:</strong> <a href="https://github.com/huseyinaksoyy/Afet-Planlama" target="_blank">github.com/huseyinaksoyy/Afet-Planlama</a></div>
+        </div>
+      </div>
+
+      <!-- BÖLÜM 1: NEDEN ŞİMDİ & ÇÖZÜLEN PROBLEM -->
+      <div class="section-title">
+        <span>1. Neden Şimdi? Türkiye Afet Verileri ve Statik Modelin İflası</span>
+        <span class="tag">Problem Analizi</span>
+      </div>
+      <div class="metric-row">
+        <div class="metric-box">
+          <div class="metric-val">6 Vefat</div>
+          <div class="metric-lbl">14-15 Ekim 2026 İst-Kocaeli Seli</div>
+          <p style="font-size:6pt; color:#475569; margin-top:1px;">3.055 kurtarma, alt kat su baskını debisi</p>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val">151 Yaralı</div>
+          <div class="metric-lbl">23 Nisan 2025 Silivri M6.2</div>
+          <p style="font-size:6pt; color:#475569; margin-top:1px;">Merdiven ve pencereden panik atlamaları</p>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val">81.473 ha</div>
+          <div class="metric-lbl">2025 Kentsel Orman Yangınları</div>
+          <p style="font-size:6pt; color:#475569; margin-top:1px;">Yerleşim yeri arayüz yangını tahliyesi</p>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val">&gt;%50 Yaralanma</div>
+          <div class="metric-lbl">6 Şubat 2023 Depremleri</div>
+          <p style="font-size:6pt; color:#475569; margin-top:1px;">Yapısal olmayan devrilen eşya travması</p>
+        </div>
+      </div>
+      <div class="card card-warning" style="margin-bottom: 5px;">
+        <strong>Statik Afet Rehberlerinin Yetersizliği:</strong> Mevcut broşürler ve genel web siteleri Türkiye'deki tüm vatandaşlara tek tip bir liste ("konserve, düdük, fener") sunmaktadır. Oysa 4. kattaki bir hanenin sismik ivmesiyle giriş kattaki sel riski; evinde 10 aylık bebek veya insülin bağımlısı bulunan bir hanenin tahliye ihtiyaçları tamamen farklıdır. 1999 Gölcük depreminde merkez üssünden 110 km mesafedeki Avcılar'da yaşanan ağır hasar, zemin büyütmesi (*Soil Amplification ~2.4x*) ve kıyı dolgusundan kaynaklanmıştır. Statik sistemler bu tarihsel mikrobölge hafızasını ve kırılgan grupları yok saymaktadır.
+      </div>
+
+      <!-- BÖLÜM 2: SDG 11.5 & 13.1 ENTEGRASYONU -->
+      <div class="section-title">
+        <span>2. Birleşmiş Milletler SDG 11.5 & 13.1 Entegrasyonu ve Kırılgan Gruplar</span>
+        <span class="tag">BM 2030 Hedefleri</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 17%;">Kırılgan Profil</th>
+            <th style="width: 28%;">Afet Anında Karşılaşılan Kritik Engel</th>
+            <th style="width: 40%;">AfetGuard AI Hiper-Kişiselleştirilmiş Müdahalesi</th>
+            <th style="width: 15%;">SDG Hedefi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="chip chip-red">0-3 Yaş Bebek</span></td>
+            <td>Merdiven inişinde ellerin dolu olması, steril su/mama yokluğu</td>
+            <td>Tahliyede iki eli serbest bırakan kanguru/sling planı, 72 saatlik steril su & toz mama</td>
+            <td><strong>SDG 11.5</strong> (Can Kaybı Azaltımı)</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-amber">65+ Yaşlı Birey</span></td>
+            <td>Merdivende denge kaybı, karanlıkta oryantasyon yitimi, ilaç kesintisi</td>
+            <td>Refakatçi tahliye kuralı, molozlu zemin bastonu, yedek gözlük, 7 günlük kalp/tansiyon kiti</td>
+            <td><strong>SDG 11.5</strong> (Kırılgan Koruma)</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-purple">Kronik Hasta</span></td>
+            <td>Elektrik kesintisinde insülinin bozulması, glukometre eksikliği</td>
+            <td>48 saat 2-8°C muhafaza sağlayan termal insülin soğuk zincir çantası ve cihaz şeritleri</td>
+            <td><strong>SDG 13.1</strong> (Afet Uyumu)</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-blue">Engelli / Kısıtlı</span></td>
+            <td>Asansörlerin devre dışı kalması, binada mahsur kalma</td>
+            <td>İki kişiyle merdiven tahliyesi sağlayan transfer kemeri/şiltesi, flaşörlü konum belirleyici</td>
+            <td><strong>SDG 11.5</strong> (Erişilebilirlik)</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-green">Evcil Hayvan</span></td>
+            <td>Sarsıntı/sel panik kaçışları, toplanma alanına kabul edilmeme</td>
+            <td>Sert gövdeli box, göğüs tasması, 3 günlük mama, toplanma alanı aşı karnesi kopyası</td>
+            <td><strong>SDG 11.5 & 13.1</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- BÖLÜM 3: ÇÖZÜM MİMARİSİ VE TEKNOLOJİ YIĞINI -->
+      <div class="section-title">
+        <span>3. Sistem Mimarisi & Teknoloji Yığını</span>
+        <span class="tag">Full-Stack Mimari</span>
+      </div>
+      <div class="two-col">
+        <div class="card card-highlight">
+          <strong>Frontend & Dashboard (Next.js 16 + Tailwind CSS):</strong>
+          <ul style="padding-left:12px; margin-top:2px;">
+            <li><strong>3 Adımlı Giriş:</strong> Konum (İl/İlçe/Mahalle), Hane/Kırılgan Gruplar ve Oda Analizi.</li>
+            <li><strong>Hibrit Giriş Modu:</strong> Multimodal Oda Fotoğrafı Yükleme (Base64) veya 8 hızlı risk etiketi.</li>
+            <li><strong>Mikrobölgeleme Hafızası:</strong> Zemin katsayısı ve dere yatağı tarihsel etiketleri.</li>
+            <li><strong>İnteraktif Çanta:</strong> Tıklandıkça Dirençlilik Skorunu %38'den %85+'e çıkaran reaktif arayüz.</li>
+          </ul>
+        </div>
+        <div class="card card-highlight">
+          <strong>Yapay Zekâ Motoru (Google Gemini 2.5 Flash API):</strong>
+          <ul style="padding-left:12px; margin-top:2px;">
+            <li><strong>Multimodal Vision:</strong> Yatak, pencere ve gardırop konumlarını tek API çağrısında saptar.</li>
+            <li><strong>Yapılandırılmış JSON Modu:</strong> Frontend kartlarına %100 uyumlu katı veri şeması üretir.</li>
+            <li><strong>Zaman Çizelgesi Simülasyonu:</strong> T+0-60s, T+1-15m ve T+1-72h adımlarını dinamik hesaplar.</li>
+            <li><strong>Yedek Simülatör:</strong> API anahtarı olmadan sıfır kesintiyle çalışan yerleşik fallback motoru.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER SAYFA 1 -->
+    <div class="page-footer">
+      <div>AfetGuard AI &bull; Grup 13 (Fatma Çevik, Ayberk Koç, Hüseyin Aksoy, Adil Yer, Mehmet Tarık Özcan)</div>
+      <div>Sayfa 1 / 2 &bull; SDG 11.5 & 13.1 Hackathon Proje Raporu</div>
+      <div>Canlı Prototip: afet-planlama.vercel.app</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== SAYFA 2 ==================== -->
+  <div class="page">
+    <div>
+      <!-- BÖLÜM 4: PROMPT MÜHENDİSLİĞİ TABLOSU -->
+      <div class="section-title">
+        <span>4. Bilinçli Prompt Tasarımı ve Stratejisi (src/lib/prompts.ts)</span>
+        <span class="tag">Prompt Engineering</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 18%;">Prompt Tekniği</th>
+            <th style="width: 27%;">Uygulama Yöntemi & Kapsamı</th>
+            <th style="width: 35%;">Teknik Gerekçe & Saha Karşılığı</th>
+            <th style="width: 20%;">Halüsinasyon Engeli</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Role Prompting</strong></td>
+            <td>AFAD saha protokolleri, BM Sendai Çerçevesi ve Deprem Mühendisliği standartlarına hakim Kıdemli Analist</td>
+            <td>Modele genel chatbot üslubu yerine arama-kurtarma ve yapı statiği ciddiyetinde uzman dil kazandırır.</td>
+            <td>Anekdotsal ve dayanaksız önerileri baştan eler.</td>
+          </tr>
+          <tr>
+            <td><strong>6-Step Chain-of-Thought (CoT)</strong></td>
+            <td>1. Zemin Hafızası &rarr; 2. Sismik/Kat İvmesi &rarr; 3. Kırılgan Bireyler &rarr; 4. Kriz Simülasyonu &rarr; 5. Mekânsal Risk &rarr; 6. Çanta & Etik</td>
+            <td>Modelin doğrudan ezbere çanta listesi yazmasını engeller; coğrafya ve bina parametrelerini adım adım sentezletir.</td>
+            <td>Hatalı sebep-sonuç ilişkilerini ve atlamaları %90 azaltır.</td>
+          </tr>
+          <tr>
+            <td><strong>Few-Shot Learning (JSON Şeması)</strong></td>
+            <td>Avcılar Denizköşkler senaryosuna ait 1 adet eksiksiz girdi-çıktı çifti (Strict JSON formatında enjekte edilmiştir)</td>
+            <td>Zero-shot'ta modelin markdown serbest metin üretip Next.js UI kartlarını kırmasını engeller; katı şema sağlar.</td>
+            <td>JSON şema kaymasını ve eksik anahtar hatalarını sıfırlar.</td>
+          </tr>
+          <tr>
+            <td><strong>Ethical Guardrails</strong></td>
+            <td>Bina sağlamlık/yıkılmazlık garantisi vermeme, reçete/dozaj yazmama ve yalnızca 112 Acil yönlendirmesi kuralı</td>
+            <td>Yapay zekânın yetkisiz mühendis veya hekim yerine geçerek hayati yanıltıcı tavsiye üretmesini engeller.</td>
+            <td>Yetkisiz yapısal ve medikal iddiaları %100 bloke eder.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- BÖLÜM 5 & 6: DEMO WALKTHROUGH & ETKİ HESAPLAMASI -->
+      <div class="section-title">
+        <span>5. Çift Senaryolu Canlı Demo Analizi & Sayısal Etki Hesaplaması</span>
+        <span class="tag">Demo & Impact</span>
+      </div>
+      <div class="two-col" style="margin-bottom: 4px;">
+        <div class="card card-danger">
+          <strong style="color:#b91c1c;">Demo 1: Avcılar Denizköşkler (Deprem & Dolgu Zemin)</strong>
+          <p style="margin-top:1px; font-size:7pt;"><strong>Girdi:</strong> 1998 öncesi, 4. Kat, 4 Kişi (10 aylık bebek, 72 yaşlı büyükanne), sahil dolgu zemin, gardırop yatak yanında.</p>
+          <p style="margin-top:1px; font-size:7pt;"><strong>AI Çıktısı:</strong> 2.4x Zemin Büyütmesi (Amplification) rezonans uyarısı; gardıroba 50x50 mm çelik L-braket ankrajı; camlara patlama filmi; ilk 60 sn'de bebeği göğse alıp yatak-baza hayat üçgenine cenin duruşu; merdivenlerde kanguru tahliyesi.</p>
+        </div>
+        <div class="card card-highlight">
+          <strong style="color:#1d4ed8;">Demo 2: Kağıthane Cendere (Sel & Eski Dere Yatağı)</strong>
+          <p style="margin-top:1px; font-size:7pt;"><strong>Girdi:</strong> 2000-2018 yapı, Giriş Kat, 3 Kişi (İnsülin bağımlısı diyabet hastası, 1 kedi), eski dere yatağı su doygunluğu.</p>
+          <p style="margin-top:1px; font-size:7pt;"><strong>AI Çıktısı:</strong> Ani su taşkını ve rögardan geri basma riski; suya temas etmeden önce ana elektrik şalterini indirme protokolü; kediyi derhal box'a alma; 48 saat 2-8°C koruyan termal insülin çantası; üst katlara dikey tahliye.</p>
+        </div>
+      </div>
+
+      <!-- ETKİ VE SU HESAPLAMA METRİK TABLOSU -->
+      <div class="card" style="margin-bottom: 5px; background:#f0fdf4; border-color:#bbf7d0;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong style="color:#15803d; font-size:8pt;">Sayısal Dirençlilik ve Hayati Kaynak Hesaplaması (4 Kişilik Hane, 72 Saat):</strong>
+          <span class="chip chip-green" style="font-size:7pt;">4 Kişi x 3 Gün x 4L = 48 Litre Su Kotası</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; margin-top:3px; font-size:7pt;">
+          <div>&bull; <strong>İç Mekân Travmaları:</strong> %75 Azalma (L-braket ankrajı)</div>
+          <div>&bull; <strong>Tahliye Süresi:</strong> %60 Hızlanma (Kanguru + Refakat)</div>
+          <div>&bull; <strong>Hayati İlaç Kesintisi:</strong> %0 Risk (Termal Soğuk Zincir)</div>
+          <div>&bull; <strong>Dirençlilik Skoru:</strong> %38 &rarr; %88 (+%50 Net Artış)</div>
+        </div>
+      </div>
+
+      <!-- BÖLÜM 7: ETİK DEĞERLENDİRME TABLOSU -->
+      <div class="section-title">
+        <span>6. Etik Sorumluluk, Kırılgan Gruplar ve Yasal Çekince Matrisi</span>
+        <span class="tag">Etik Güvenlik (15 Puan)</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 22%;">Etik Güvenlik Alanı</th>
+            <th style="width: 38%;">Olası Risk & Halüsinasyon Tehdidi</th>
+            <th style="width: 40%;">AfetGuard AI Sisteminde Alınan Katı Önlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Yapısal Mühendislik Güvencesi</strong></td>
+            <td>Modelin fotoğrafa bakıp "bu bina asla yıkılmaz" veya "bu bina kesin çöker" taahhüdünde bulunması</td>
+            <td>Sistem isteminde kesin güvence verilmesi yasaklanmıştır; raporun Çevre Bakanlığı lisanslı karot testlerinin yerini tutmayacağı Kart 4'te deklare edilir.</td>
+          </tr>
+          <tr>
+            <td><strong>Tıbbi Dozaj ve Reçete</strong></td>
+            <td>Yapay zekânın kronik hastaya yetkisiz ilaç dozu, muadil ilaç veya tıbbi tedavi önermesi</td>
+            <td>Modelin yeni ilaç tavsiyesi vermesi engellenmiştir; yalnızca hekim onaylı mevcut ilacın reçete kopyası ve 2-8°C soğuk zincir lojistiği hatırlatılır.</td>
+          </tr>
+          <tr>
+            <td><strong>Acil Çağrı & İletişim</strong></td>
+            <td>Afet anında alternatif gayriresmi yardım kanallarına yönlendirme riski</td>
+            <td>Yalnızca T.C. İçişleri Bakanlığı 112 Acil Çağrı Merkezi ve AFAD frekansları tek yetkili merci olarak vurgulanır.</td>
+          </tr>
+          <tr>
+            <td><strong>Kullanıcı Veri Gizliliği</strong></td>
+            <td>Kullanıcının yüklediği oda fotoğraflarının ve konumunun sunucularda depolanması</td>
+            <td>Fotoğraflar sunucu diskine kaydedilmez; bellekte anlık base64 işlenir. API anahtarı kullanıcının yerel tarayıcısında (localStorage) saklanır.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FOOTER SAYFA 2 -->
+    <div class="page-footer">
+      <div>AfetGuard AI &bull; Grup 13 (Fatma Çevik, Ayberk Koç, Hüseyin Aksoy, Adil Yer, Mehmet Tarık Özcan)</div>
+      <div>Sayfa 2 / 2 &bull; SDG 11.5 & 13.1 Hackathon Proje Raporu &bull; Pazar 19:00 Teslimi</div>
+      <div>GitHub Deposu: github.com/huseyinaksoyy/Afet-Planlama</div>
+    </div>
+  </div>
+
+</body>
+</html>

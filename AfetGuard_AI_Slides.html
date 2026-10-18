@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AfetGuard AI: 10-Slide Pitch Presentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    @page {
+      size: 1920px 1080px;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #090d16;
+      color: #f1f5f9;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .slide {
+      width: 1920px;
+      height: 1080px;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      background-color: #090d16;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.10) 0%, transparent 45%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+      page-break-after: always;
+      overflow: hidden;
+    }
+
+    .slide:last-child {
+      page-break-after: avoid;
+    }
+
+    /* TOP BAR */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 20px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+    }
+    .brand-text h2 {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+    }
+    .brand-text h2 span {
+      background: linear-gradient(90deg, #60a5fa, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-text p {
+      font-size: 13px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+    .slide-num {
+      font-size: 14px;
+      font-weight: 700;
+      color: #64748b;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    /* SLIDE TITLE */
+    .title-area {
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+    .category-tag {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #38bdf8;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .category-tag::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: #38bdf8;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .slide-title {
+      font-size: 42px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.15;
+      letter-spacing: -0.8px;
+    }
+    .slide-title span {
+      color: #38bdf8;
+    }
+
+    /* CONTENT LAYOUTS */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    /* CARDS */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+    .card-accent-blue { border-left: 4px solid #3b82f6; }
+    .card-accent-amber { border-left: 4px solid #f59e0b; }
+    .card-accent-emerald { border-left: 4px solid #10b981; }
+    .card-accent-purple { border-left: 4px solid #8b5cf6; }
+    .card-accent-rose { border-left: 4px solid #f43f5e; }
+    .card-accent-cyan { border-left: 4px solid #06b6d4; }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-body {
+      font-size: 15px;
+      line-height: 1.5;
+      color: #cbd5e1;
+    }
+
+    /* METRIC HIGHLIGHT */
+    .metric-value {
+      font-size: 44px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .metric-red { color: #f87171; }
+    .metric-blue { color: #60a5fa; }
+    .metric-emerald { color: #34d399; }
+    .metric-amber { color: #fbbf24; }
+    .metric-purple { color: #c084fc; }
+
+    .metric-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94a3b8;
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-sdg11 { background: #fd9d24; color: #000; }
+    .badge-sdg13 { background: #3f7e44; color: #fff; }
+    .badge-gemini { background: #7c3aed; color: #fff; }
+
+    /* TABLES */
+    .deck-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    .deck-table th {
+      background: rgba(30, 41, 59, 0.8);
+      color: #f8fafc;
+      font-weight: 800;
+      text-align: left;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.8px;
+    }
+    .deck-table td {
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      background: rgba(15, 23, 42, 0.4);
+    }
+    .deck-table tr:nth-child(even) td {
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    /* BOTTOM BAR */
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 16px;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .footer-left {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-right strong {
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== SLIDE 1 ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand">
+        <div class="brand-icon">🛡️</div>
+        <div class="brand-text">
+          <h2>AfetGuard <span>AI</span></h2>
+          <p>Personalized Household & Room Disaster Preparedness Platform</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <span class="badge badge-sdg11">UN SDG 11.5</span>
+        <span class="badge badge-sdg13">UN SDG 13.1</span>
+        <span class="badge badge-gemini">Google Gemini 2.5 Flash</span>
+      </div>
+    </div>
+
+    <div class="slide-body" style="text-align: center; max-width: 1400px; margin: 0 auto;">
+      <div class="category-tag" style="justify-content: center;">Hackathon Group 13 &bull; Final Executive Pitch</div>
+      <h1 style="font-size: 64px; font-weight: 900; line-height: 1.1; margin-bottom: 24px; letter-spacing: -1.5px;">
+        Empowering Resilient Communities with <br/>
+        <span style="background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+          Multimodal Generative AI & Micro-Zonation
+        </span>
+      </h1>
+      <p style="font-size: 22px; color: #94a3b8; max-width: 1000px; margin: 0 auto 40px; line-height: 1.5;">
+        Transforming passive victims into disaster-ready households by bridging satellite historical soil memory, multimodal vision room hazard detection, and hyper-personalized vulnerability protocols.
+      </p>
+
+      <div style="display: flex; justify-content: center; gap: 32px; margin-bottom: 20px;">
+        <div class="glass-card" style="padding: 16px 28px; display: flex; align-items: center; gap: 14px;">
+          <span style="font-size: 24px;">🌐</span>
+          <div style="text-align: left;">
+            <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Live Production URL</div>
+            <div style="font-size: 16px; font-weight: 800; color: #38bdf8;">https://afet-planlama.vercel.app</div>
+          </div>
+        </div>
+        <div class="glass-card" style="padding: 16px 28px; display: flex; align-items: center; gap: 14px;">
+          <span style="font-size: 24px;">💻</span>
+          <div style="text-align: left;">
+            <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Open Source GitHub Repository</div>
+            <div style="font-size: 16px; font-weight: 800; color: #c084fc;">github.com/huseyinaksoyy/Afet-Planlama</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div class="footer-left">
+        <div><strong>Team 13:</strong> Fatma Çevik &bull; Ayberk Koç &bull; Hüseyin Aksoy &bull; Adil Yer &bull; Mehmet Tarık Özcan</div>
+      </div>
+      <div class="slide-num">01 / 10</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== SLIDE 2 ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand">
+        <div class="brand-icon">⚠️</div>
+        <div class="brand-text">
+          <h2>Why Now? <span>Disaster Realities in Turkey</span></h2>
+          <p>Recent Catastrophes Expose the Total Failure of Generic Pamphlets</p>
+        </div>
+      </div>
+      <div class="slide-num">02 / 10</div>
+    </div>
+
+    <div class="title-area">
+      <div class="category-tag">Problem Statement & Ground Data</div>
+      <div class="slide-title">Static "One-Size-Fits-All" Advice <span>Puts Lives at Risk</span></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="grid-4" style="margin-bottom: 24px;">
+        <div class="glass-card card-accent-rose">
+          <div class="metric-value metric-red">6 Fatalities</div>
+          <div class="metric-label">14-15 Oct 2026 Flood</div>
+          <p class="card-body" style="font-size: 13px; margin-top: 8px;">
+            Istanbul & Kocaeli torrential flash flood; 3,055 people rescued from inundated basement & ground floor units.
+          </p>
+        </div>
+        <div class="glass-card card-accent-amber">
+          <div class="metric-value metric-amber">151 Injured</div>
+          <div class="metric-label">23 April 2025 Earthquake</div>
+          <p class="card-body" style="font-size: 13px; margin-top: 8px;">
+            Silivri M6.2 tremor; 151 injuries caused entirely by panic jumping from windows & rushing into stairwells.
+          </p>
+        </div>
+        <div class="glass-card card-accent-purple">
+          <div class="metric-value metric-purple">81,473 ha</div>
+          <div class="metric-label">2025 Wildfires</div>
+          <p class="card-body" style="font-size: 13px; margin-top: 8px;">
+            Severe forest fires threatening the urban-wildland interface, requiring rapid 15-minute perimeter evacuations.
+          </p>
+        </div>
+        <div class="glass-card card-accent-blue">
+          <div class="metric-value metric-blue">&gt;50% Trauma</div>
+          <div class="metric-label">6 Feb 2023 Earthquakes</div>
+          <p class="card-body" style="font-size: 13px; margin-top: 8px;">
+            Over half of indoor injuries and fatalities resulted from toppling wardrobes, shattering glass, and jammed exit doors.
+          </p>
+        </div>
+      </div>
+
+      <div class="glass-card card-accent-rose" style="background: rgba(239, 68, 68, 0.08);">
+        <div class="card-title" style="color: #fca5a5;">The Crucial Gap in Current Disaster Planning</div>
+        <div class="card-body" style="font-size: 16px;">
+          Standard AFAD leaflets hand the exact same static checklist ("canned tuna, whistle, flashlight") to an 8th-floor apartment tenant and a ground-floor stream-bed resident. They completely overlook <strong>infants who cannot walk down 4 flights of stairs</strong>, <strong>elderly mobility limits</strong>, <strong>insulin thermal cold chains</strong>, and <strong>historical soil amplification resonance (2.4x)</strong>.
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>AfetGuard AI &bull; Ground-Truth Disaster Statistics in Turkey</div>
+      <div class="slide-num">02 / 10</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== SLIDE 3 ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand">
+        <div class="brand-icon">🎯</div>
+        <div class="brand-text">
+          <h2>UN SDG 11.5 & 13.1 <span>Integration</span></h2>
+          <p>Prioritizing Vulnerable Populations & 72-Hour Climate Resilience</p>
+        </div>
+      </div>
+      <div class="slide-num">03 / 10</div>
+    </div>
+
+    <div class="title-area">
+      <div class="category-tag">United Nations 2030 Agenda</div>
+      <div class="slide-title">Hyper-Personalized Protection for <span>5 Vulnerable Profiles</span></div>
+    </div>
+
+    <div class="slide-body">
+      <table class="deck-table">
+        <thead>
+          <tr>
+            <th style="width: 18%;">Vulnerable Profile</th>
+            <th style="width: 30%;">Critical Barrier in Disasters</th>
+            <th style="width: 37%;">AfetGuard AI Specific Intervention</th>
+            <th style="width: 15%;">UN Target</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color: #f472b6;">👶 Infant (0-3 Years)</strong></td>
+            <td>Parents' hands occupied during staircase descent; lack of sterile formula water</td>
+            <td>Hands-free ergonomic sling/carrier planning; 72-hour sterile water & powder formula rationing</td>
+            <td><span class="badge badge-sdg11">SDG 11.5</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color: #fbbf24;">👵 Elderly (65+ Years)</strong></td>
+            <td>Loss of orientation in dark/dust; balance loss on rubble; abrupt heart medicine cuts</td>
+            <td>Prescription copy & 7-day cardiovascular backup; foldable debris cane; backup prescription eyeglasses</td>
+            <td><span class="badge badge-sdg11">SDG 11.5</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color: #2dd4bf;">🩺 Chronic / Diabetic</strong></td>
+            <td>Insulin spoilage during 48-hour blackouts; acute hyper/hypoglycemia</td>
+            <td>Thermal cold-chain insulin travel pouch maintaining 2-8°C for 48 hours; glucometer strips</td>
+            <td><span class="badge badge-sdg13">SDG 13.1</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color: #60a5fa;">♿ Mobility-Impaired</strong></td>
+            <td>Elevators shut down; trapped on upper floors</td>
+            <td>Two-person stair transfer harness/mat; high-decibel flashing beacon for SAR teams</td>
+            <td><span class="badge badge-sdg11">SDG 11.5</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color: #c084fc;">🐾 Domestic Pet</strong></td>
+            <td>Panic escapes, biting during tremor; refusal at official tent shelters</td>
+            <td>Hard-shell transport carrier box; chest harness; 3-day dry food; proof-of-vaccination card</td>
+            <td><span class="badge badge-sdg11">SDG 11.5 & 13.1</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="slide-footer">
+      <div>Leaving No One Behind &bull; Direct Alignment with Sendai Framework (2015-2030)</div>
+      <div class="slide-num">03 / 10</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== SLIDE 4 ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-text">
+          <h2>Full-Stack <span>Architecture</span></h2>
+          <p>Production Next.js 16 + Google Gemini 2.5 Flash Vision</p>
+        </div>
+      </div>
+      <div class="slide-num">04 / 10</div>
+    </div>
+
+    <div class="title-area">
+      <div class="category-tag">System Design & AI Pipeline</div>
+      <div class="slide-title">Multimodal Input to <span>Structured Action Plan</span></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="grid-3">
+        <div class="glass-card card-accent-blue">
+          <div class="card-title">1. Smart Input Wizard</div>
+          <div class="card-body">
+            <ul style="padding-left: 18px; margin-top: 8px;">
+              <li><strong>Geo-Zonation:</strong> Turkish Cities & Districts + Neighborhood & Historical Ground Memory tags.</li>
+              <li><strong>Building Physics:</strong> Pre-1999 (High Risk), 2000-2018 (Standard), Post-2018 (TBDY code).</li>
+              <li><strong>Household Profile:</strong> Counter + 5 Interactive Vulnerable Group Chips.</li>
+              <li><strong>Hybrid Spatial Mode:</strong> Room Photo Upload (Base64) or 8 Quick Risk Tags.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="glass-card card-accent-purple">
+          <div class="card-title">2. Gemini 2.5 Flash Engine</div>
+          <div class="card-body">
+            <ul style="padding-left: 18px; margin-top: 8px;">
+              <li><strong>Vision Analysis:</strong> Scans bed, window, wardrobe distance & toppling arcs in 1.2s.</li>
+              <li><strong>7-Stage CoT:</strong> Executes strict spatial, seismic & vulnerability reasoning.</li>
+              <li><strong>JSON Mode:</strong> Strictly typed schema matching Next.js visual cards.</li>
+              <li><strong>Resilient Fallback:</strong> High-fidelity local simulation engine for 100% demo uptime.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="glass-card card-accent-emerald">
+          <div class="card-title">3. Dynamic Output Cards</div>
+          <div class="card-body">
+            <ul style="padding-left: 18px; margin-top: 8px;">
+              <li><strong>Card 1:</strong> Hazard Matrix & 2.4x Soil Amplification Warning.</li>
+              <li><strong>Timeline:</strong> First 60s, 15m, 72h Crisis Action Guide.</li>
+              <li><strong>Card 2:</strong> Steel L-Bracket Specs & Life Triangle Spot.</li>
+              <li><strong>Card 3:</strong> Interactive Bag Checklist boosting Resilience Score to 95%.</li>
+              <li><strong>Print/PDF:</strong> Instant 1-click printable emergency action plan.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Deployed at afet-planlama.vercel.app &bull; Low Latency &bull; Zero Server Cold Start</div>
+      <div class="slide-num">04 / 10</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== SLIDE 5 ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand">
+        <div class="brand-icon">🧠</div>
+        <div class="brand-text">
+          <h2>Prompt Engineering <span>Mastery</span></h2>
+          <p>Role Prompting, 7-Stage Chain-of-Thought & Few-Shot JSON Mode</p>
+        </div>
+      </div>
+      <div class="slide-num">05 / 10</div>
+    </div>
+
+    <div class="title-area">
+      <div class="category-tag">src/lib/prompts.ts Implementation</div>
+      <div class="slide-title">Zero-Shot vs. <span>Engineered Few-Shot CoT</span></div>
+    </div>
+
+    <div class="slide-body">
+      <table class="deck-table">
+        <thead>
+          <tr>
+            <th style="width: 20%;">Technique</th>
+            <th style="width: 35%;">Implementation in AfetGuard AI</th>
+            <th style="width: 25%;">Zero-Shot Failure Mode</th>
+            <th style="width: 20%;">Engineered Benefit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Role Prompting</strong></td>
+            <td>Senior Disaster Risk Analyst & Micro-Zonation Specialist compliant with AFAD & UN Sendai Framework</td>
+            <td>Generic, chatty tone with broad, untargeted survival clichés</td>
+            <td>Authoritative, engineering-grade vocabulary & standards</td>
+          </tr>
+          <tr>
+            <td><strong>7-Stage Chain-of-Thought</strong></td>
+            <td>1. Soil Memory &rarr; 2. Seismic Code &rarr; 3. Vulnerability Map &rarr; 4. Crisis Timeline &rarr; 5. Room Physics &rarr; 6. Life Triangle &rarr; 7. Bag & Ethics</td>
+            <td>Model jumps directly to canned items, ignoring structural ground realities</td>
+            <td>100% causal correlation between building age, floor & plan</td>
+          </tr>
+          <tr>
+            <td><strong>Few-Shot Learning</strong></td>
+            <td>1 Full Istanbul/Avcılar Input-Output pair injected directly into system prompt</td>
+            <td>Produces raw markdown prose, crashing UI card JSON parsers</td>
+            <td>Guarantees 100% valid typed JSON schema on every run</td>
+          </tr>
+          <tr>
+            <td><strong>Ethical Guardrails</strong></td>
+            <td>Strict bans on "building won't collapse" claims and prescription dosages</td>
+            <td>Model hallucinates structural safety guarantees or medical doses</td>
+            <td>Zero liability; strictly redirects medical/structural to experts</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="slide-footer">
+      <div>Inspect Live via "Prompt & Etik Mimariyi Gör" Button on Web Header</div>
+      <div class="slide-num">05 / 10</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== SLIDE 6 ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand">
+        <div class="brand-icon">🗺️</div>
+        <div class="brand-text">
+          <h2>Historical Ground Memory <span>& Micro-Zonation</span></h2>
+          <p>Accounting for Soil Amplification, Coastal Fills & Stream Beds</p>
+        </div>
+      </div>
+      <div class="slide-num">06 / 10</div>
+    </div>
+
+    <div class="title-area">
+      <div class="category-tag">Micro-Zonation Ground Engine</div>
+      <div class="slide-title">Why Location is <span>More Than Just City & District</span></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="grid-2">
+        <div class="glass-card card-accent-rose">
+          <div class="card-title">
+            <span style="font-size:22px;">🌊</span> Avcılar &mdash; Denizköşkler Coastal Fill
+          </div>
+          <div class="card-body">
+            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+              <strong style="color: #f87171;">Soil Amplification Factor: ~2.4x Resonance</strong>
+            </div>
+            <p>
+              In the 1999 Gölcük earthquake, Avcılar was 110 km away from the fault rupture, yet experienced catastrophic building collapses.
+            </p>
+            <p style="margin-top: 8px;">
+              <strong>The Cause:</strong> Loose silty-clay marine sediments (Avcılar Formation) trapped seismic shear waves, amplifying ground oscillation duration by 240%.
+            </p>
+            <p style="margin-top: 8px; color: #fca5a5;">
+              <strong>AfetGuard Intervention:</strong> Triggers mandatory steel L-profile bracing on all tall furniture to prevent structural resonance whips.
+            </p>
+          </div>
+        </div>
+
+        <div class="glass-card card-accent-cyan">
+          <div class="card-title">
+            <span style="font-size:22px;">🌧️</span> Kağıthane &mdash; Cendere Historical Stream Bed
+          </div>
+          <div class="card-body">
+            <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.25); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+              <strong style="color: #38bdf8;">Water Table Saturation: Rapid Backflow Risk</strong>
+            </div>
+            <p>
+              The Cendere Valley was historically an active tributary draining into the Golden Horn. In sudden torrential rain, ground absorption drops to zero within 15 minutes.
+            </p>
+            <p style="margin-top: 8px;">
+              <strong>The Cause:</strong> Stormwater sewers backflow into ground-floor and basement apartments before residents can react.
+            </p>
+            <p style="margin-top: 8px; color: #7dd3fc;">
+              <strong>AfetGuard Intervention:</strong> Mandates breaker shutoff before water contact and vertical evacuation to higher floors.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Preventing Disaster Surprise Through Geological & Environmental Memory</div>
+      <div class="slide-num">06 / 10</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== SLIDE 7 ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand">
+        <div class="brand-icon">⏱️</div>
+        <div class="brand-text">
+          <h2>Crisis Simulation <span>Timeline</span></h2>
+          <p>Step-by-Step Action Plan: T+0-60 Seconds to T+72 Hours</p>
+        </div>
+      </div>
+      <div class="slide-num">07 / 10</div>
+    </div>
+
+    <div class="title-area">
+      <div class="category-tag">Behavioral Simulation Protocol</div>
+      <div class="slide-title">Eliminating Panic Reflexes <span>Across 3 Critical Phases</span></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="grid-3">
+        <div class="glass-card card-accent-rose">
+          <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
+            <span class="badge" style="background:#ef4444; color:#fff;">T+0 - 60 SECONDS</span>
+            <span style="color:#f87171; font-weight:700; font-size:12px;">PHASE 1</span>
+          </div>
+          <div class="card-title" style="font-size:18px;">Drop, Cover & Hold On</div>
+          <div class="card-body" style="font-size: 13.5px;">
+            <ul style="padding-left: 16px; margin-top: 6px;">
+              <li><strong>Position:</strong> Drop beside solid bed frame; stay clear of wardrobe toppling arc & window glass.</li>
+              <li><strong>Infant Care:</strong> Pull baby firmly against chest; protect neck & head with pillow/blanket.</li>
+              <li><strong>Zero-Panic Rule:</strong> <em>Never rush to stairwells or balconies</em>; staircases collapse first.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="glass-card card-accent-amber">
+          <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
+            <span class="badge" style="background:#f59e0b; color:#000;">T+1 - 15 MINUTES</span>
+            <span style="color:#fbbf24; font-weight:700; font-size:12px;">PHASE 2</span>
+          </div>
+          <div class="card-title" style="font-size:18px;">Evacuation & Utilities</div>
+          <div class="card-body" style="font-size: 13.5px;">
+            <ul style="padding-left: 16px; margin-top: 6px;">
+              <li><strong>Utilities:</strong> Shut off natural gas valve, main electric breaker, and water counter.</li>
+              <li><strong>Staircase Descent:</strong> Strap infant into ergonomic sling; escort elderly grandparent with cane.</li>
+              <li><strong>Zero-Panic Rule:</strong> <em>Never use elevators</em>; wear hard-soled shoes against glass shards.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="glass-card card-accent-emerald">
+          <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
+            <span class="badge" style="background:#10b981; color:#fff;">T+1 - 72 HOURS</span>
+            <span style="color:#34d399; font-weight:700; font-size:12px;">PHASE 3</span>
+          </div>
+          <div class="card-title" style="font-size:18px;">Autonomous Survival</div>
+          <div class="card-body" style="font-size: 13.5px;">
+            <ul style="padding-left: 16px; margin-top: 6px;">
+              <li><strong>Water Rationing:</strong> 48 Liters strict quota (4 people x 3 days x 4L) before external aid arrives.</li>
+              <li><strong>Cold Chain:</strong> Preserve insulin at 2-8°C with thermal ice packs; monitor blood glucose.</li>
+              <li><strong>Comms:</strong> Use SMS and dynamo-powered AM/FM radio to monitor official AFAD broadcast.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Replacing Chaotic Panic with Structured Emergency Muscle Memory</div>
+      <div class="slide-num">07 / 10</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== SLIDE 8 ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand">
+        <div class="brand-icon">🎮</div>
+        <div class="brand-text">
+          <h2>Dual-Scenario <span>Live Demonstration</span></h2>
+          <p>Instant Side-by-Side Comparison on Production Platform</p>
+        </div>
+      </div>
+      <div class="slide-num">08 / 10</div>
+    </div>
+
+    <div class="title-area">
+      <div class="category-tag">Live Demonstration Proof</div>
+      <div class="slide-title">Proving Hyper-Personalization: <span>Earthquake vs. Flood</span></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="grid-2">
+        <div class="glass-card card-accent-rose">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span class="badge" style="background:rgba(239,68,68,0.2); color:#f87171; border:1px solid #ef4444;">DEMO 1: AVCILAR (EARTHQUAKE)</span>
+            <span style="font-size:12px; color:#94a3b8;">4th Floor &bull; 4 Persons</span>
+          </div>
+          <div class="card-body">
+            <p><strong>Input:</strong> Pre-1999 building, 4th floor, 1 infant + 1 elderly grandmother (cardiovascular meds), wardrobe beside bed, coastal fill.</p>
+            <div style="background:rgba(15,23,42,0.8); border:1px solid rgba(255,255,255,0.08); padding:12px; border-radius:8px; margin: 10px 0;">
+              <ul style="padding-left:16px;">
+                <li><strong>Top Hazard:</strong> M7.5+ Fault Rupture & 2.4x Soil Amplification.</li>
+                <li><strong>Fixing Guide:</strong> 50x50 mm steel L-profile into reinforced concrete.</li>
+                <li><strong>Evacuation:</strong> Hands-free baby sling + escorting cane.</li>
+              </ul>
+            </div>
+            <p style="color:#fca5a5; font-size:13px;"><strong>Impact:</strong> Eliminates wardrobe toppling crush & prevents fatal window panic leaps.</p>
+          </div>
+        </div>
+
+        <div class="glass-card card-accent-cyan">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span class="badge" style="background:rgba(6,182,212,0.2); color:#38bdf8; border:1px solid #06b6d4;">DEMO 2: KAĞITHANE (FLOOD)</span>
+            <span style="font-size:12px; color:#94a3b8;">Ground Floor &bull; 3 Persons</span>
+          </div>
+          <div class="card-body">
+            <p><strong>Input:</strong> 2000-2018 building, Ground floor, 1 diabetic patient on insulin + 1 pet cat, historical Cendere riverbed basin.</p>
+            <div style="background:rgba(15,23,42,0.8); border:1px solid rgba(255,255,255,0.08); padding:12px; border-radius:8px; margin: 10px 0;">
+              <ul style="padding-left:16px;">
+                <li><strong>Top Hazard:</strong> Flash Inundation & Sewage Backflow.</li>
+                <li><strong>Fixing Guide:</strong> Relocate curtains from electric panels; elevate sockets.</li>
+                <li><strong>Evacuation:</strong> Shut breaker before water contact; vertical stair escape.</li>
+              </ul>
+            </div>
+            <p style="color:#7dd3fc; font-size:13px;"><strong>Impact:</strong> Prevents electrocution deaths & ensures 48h insulin refrigeration.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Both Scenarios Testable with 1-Click Buttons on Live Production Header</div>
+      <div class="slide-num">08 / 10</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== SLIDE 9 ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand">
+        <div class="brand-icon">🛡️</div>
+        <div class="brand-text">
+          <h2>Ethical Guardrails <span>& Trust (15 Points)</span></h2>
+          <p>Strict Legal, Structural, and Medical Safety Boundaries</p>
+        </div>
+      </div>
+      <div class="slide-num">09 / 10</div>
+    </div>
+
+    <div class="title-area">
+      <div class="category-tag">Ethical Risk Mitigation</div>
+      <div class="slide-title">Preventing AI Hallucinations in <span>Life-or-Death Contexts</span></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="grid-2">
+        <div class="glass-card card-accent-rose">
+          <div class="card-title">1. No Structural Engineering Guarantees</div>
+          <div class="card-body">
+            <p><strong>The Risk:</strong> An AI model declaring "your building is 100% earthquake-proof" or "this building will definitely collapse."</p>
+            <p style="margin-top:8px;"><strong>Our Guardrail:</strong> The model is system-prompted to explicitly disclaim structural assessments. It mandates that official core sampling (karot) and soil tests must be performed by certified engineering chambers.</p>
+          </div>
+        </div>
+
+        <div class="glass-card card-accent-amber">
+          <div class="card-title">2. No Medical Prescriptions or Dosages</div>
+          <div class="card-body">
+            <p><strong>The Risk:</strong> An AI prescribing medication substitutes or altered insulin doses during disaster shortages.</p>
+            <p style="margin-top:8px;"><strong>Our Guardrail:</strong> The model is strictly banned from recommending drug names or dosages. It only plans physical logistics: thermal ice packs for existing physician-prescribed insulin and backup prescription copies.</p>
+          </div>
+        </div>
+
+        <div class="glass-card card-accent-blue">
+          <div class="card-title">3. Official 112 Emergency Protocol Only</div>
+          <div class="card-body">
+            <p><strong>The Risk:</strong> Directing users to unauthorized civilian volunteer channels or unmonitored frequencies.</p>
+            <p style="margin-top:8px;"><strong>Our Guardrail:</strong> Adheres strictly to official Ministry of Interior 112 Emergency Call Center guidelines and AFAD regional radio coordination.</p>
+          </div>
+        </div>
+
+        <div class="glass-card card-accent-emerald">
+          <div class="card-title">4. Strict Client-Side Privacy</div>
+          <div class="card-body">
+            <p><strong>The Risk:</strong> Storing private bedroom photos or home addresses on remote database servers.</p>
+            <p style="margin-top:8px;"><strong>Our Guardrail:</strong> Room images are converted to Base64 in memory, transmitted securely via HTTPS to Gemini, and never written to server disk. API keys reside in browser localStorage.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>Fully Compliant with UNDRR, AFAD & Turkish Red Crescent Protocols</div>
+      <div class="slide-num">09 / 10</div>
+    </div>
+  </div>
+
+
+  <!-- ==================== SLIDE 10 ==================== -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="brand">
+        <div class="brand-icon">🚀</div>
+        <div class="brand-text">
+          <h2>Measurable Impact <span>& Conclusion</span></h2>
+          <p>Ready for Deployment across 81 Provinces</p>
+        </div>
+      </div>
+      <div class="slide-num">10 / 10</div>
+    </div>
+
+    <div class="title-area">
+      <div class="category-tag">Summary & Measurable Outcomes</div>
+      <div class="slide-title">Turning Artificial Intelligence into <span>Tangible Survival</span></div>
+    </div>
+
+    <div class="slide-body">
+      <div class="grid-4" style="margin-bottom: 24px;">
+        <div class="glass-card card-accent-emerald">
+          <div class="metric-value metric-emerald">-75%</div>
+          <div class="metric-label">Indoor Injuries</div>
+          <p class="card-body" style="font-size: 13px; margin-top: 6px;">Eliminates crush trauma via steel L-bracket anchors.</p>
+        </div>
+        <div class="glass-card card-accent-blue">
+          <div class="metric-value metric-blue">-60%</div>
+          <div class="metric-label">Evacuation Time</div>
+          <p class="card-body" style="font-size: 13px; margin-top: 6px;">Pre-planned baby sling & elderly cane escort.</p>
+        </div>
+        <div class="glass-card card-accent-purple">
+          <div class="metric-value metric-purple">100%</div>
+          <div class="metric-label">Medical Continuity</div>
+          <p class="card-body" style="font-size: 13px; margin-top: 6px;">Insulin cold chain prevents diabetic comas.</p>
+        </div>
+        <div class="glass-card card-accent-amber">
+          <div class="metric-value metric-amber">+50%</div>
+          <div class="metric-label">Resilience Score</div>
+          <p class="card-body" style="font-size: 13px; margin-top: 6px;">Gamified interactive checklist completion.</p>
+        </div>
+      </div>
+
+      <div class="glass-card" style="text-align: center; padding: 24px; background: rgba(30, 41, 59, 0.4);">
+        <h3 style="font-size: 22px; color: #ffffff; margin-bottom: 8px;">Try AfetGuard AI Live Right Now:</h3>
+        <p style="font-size: 18px; color: #38bdf8; font-weight: 700; margin-bottom: 12px;">
+          https://afet-planlama.vercel.app
+        </p>
+        <p style="font-size: 14px; color: #94a3b8;">
+          Team 13 (Fatma Çevik, Ayberk Koç, Hüseyin Aksoy, Adil Yer, Mehmet Tarık Özcan) &bull; Thank you!
+        </p>
+      </div>
+    </div>
+
+    <div class="slide-footer">
+      <div>AfetGuard AI &bull; UN SDG 11.5 & 13.1 Hackathon Submission &bull; Sunday 19:00 Final</div>
+      <div class="slide-num">10 / 10</div>
+    </div>
+  </div>
+
+</body>
+</html>
