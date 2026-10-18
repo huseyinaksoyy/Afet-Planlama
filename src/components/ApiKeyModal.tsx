@@ -41,7 +41,7 @@ export default function ApiKeyModal({ isOpen, onClose, apiKey, onSaveKey }: ApiK
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
-          aria-label="Kapat"
+          aria-label="Close"
         >
           <X className="w-5 h-5" />
         </button>
@@ -52,18 +52,17 @@ export default function ApiKeyModal({ isOpen, onClose, apiKey, onSaveKey }: ApiK
           </div>
           <div>
             <h3 id="api-key-modal-title" className="text-lg font-bold text-white">
-              Gemini API Anahtarı Yapılandırması
+              Gemini API Key Configuration
             </h3>
             <p className="text-xs text-slate-400">
-              Canlı Gemini 2.5 / 1.5 Flash modelleri ile gerçek zamanlı analiz
+              Real-time disaster risk analysis via Google Gemini 2.5 / 1.5 Flash models
             </p>
           </div>
         </div>
 
         <div className="space-y-4 mb-6">
           <p className="text-sm text-slate-300 leading-relaxed">
-            Kendi Google Gemini API anahtarınızı girerek doğrudan Google yapay zekâ altyapısıyla çalışabilirsiniz. 
-            Anahtar girilmediğinde sistem jüri ve test için <span className="text-blue-400 font-semibold">yüksek sadakatli akıllı simülasyon motorunu</span> otomatik devreye alır.
+            Connect your own Google Gemini API key to run live multimodal and text inference directly against Google&apos;s AI infrastructure. When no key is entered, the <span className="text-blue-400 font-semibold">high-fidelity resilience simulation engine</span> automatically activates.
           </p>
 
           <div className="space-y-1.5">
@@ -83,7 +82,7 @@ export default function ApiKeyModal({ isOpen, onClose, apiKey, onSaveKey }: ApiK
                   type="button"
                   onClick={handleClear}
                   className="absolute right-3 top-2.5 text-slate-400 hover:text-rose-400 transition-colors"
-                  title="Anahtarı Temizle"
+                  title="Clear Key"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -94,9 +93,9 @@ export default function ApiKeyModal({ isOpen, onClose, apiKey, onSaveKey }: ApiK
           <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 text-xs text-slate-400 flex items-start gap-2.5">
             <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
             <div>
-              <span className="font-semibold text-slate-200">Gizlilik & Güvenlik Güvencesi:</span>
+              <span className="font-semibold text-slate-200">Privacy & Security Guarantee:</span>
               <p className="mt-0.5 leading-relaxed">
-                API anahtarınız yalnızca tarayıcınızın yerel belleğinde saklanır ve hiçbir üçüncü taraf sunucuya kaydedilmez. Proje kök dizinindeki <code className="text-slate-300">.env.local</code> dosyasından da otomatik okunabilir.
+                Your API key resides exclusively in your browser&apos;s client-side localStorage and is never persisted on remote databases. It can also be auto-loaded from <code className="text-slate-300">.env.local</code>.
               </p>
             </div>
           </div>
@@ -107,7 +106,7 @@ export default function ApiKeyModal({ isOpen, onClose, apiKey, onSaveKey }: ApiK
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 transition-colors"
           >
-            Google AI Studio üzerinden ücretsiz API anahtarı edinin
+            Get a free Gemini API key from Google AI Studio
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
         </div>
@@ -118,20 +117,20 @@ export default function ApiKeyModal({ isOpen, onClose, apiKey, onSaveKey }: ApiK
             onClick={onClose}
             className="px-4 py-2 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
           >
-            İptal
+            Cancel
           </button>
           <button
             type="button"
             onClick={handleSave}
-            className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/25 transition-all"
+            className="px-5 py-2 rounded-xl text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white transition-all flex items-center gap-1.5 shadow-lg shadow-blue-600/30"
           >
             {savedSuccess ? (
               <>
                 <Check className="w-4 h-4 text-emerald-300" />
-                Kaydedildi!
+                Saved!
               </>
             ) : (
-              "Kaydet ve Uygula"
+              "Save & Apply"
             )}
           </button>
         </div>

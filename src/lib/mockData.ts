@@ -13,8 +13,10 @@ export function generateMockAnalysis(input: UserInput): DisasterAnalysisResult {
   const isPost2018 = input.buildingAge === "post2018";
   const isFloodScenario = 
     input.district.toLowerCase().includes("kağıthane") || 
+    input.district.toLowerCase().includes("kagithane") ||
     input.city.toLowerCase().includes("rize") ||
-    input.historicalGroundTag?.includes("dere yatağı") ||
+    input.historicalGroundTag?.toLowerCase().includes("riverbed") ||
+    input.historicalGroundTag?.toLowerCase().includes("dere") ||
     (input.floorLevel === "basement_ground" && input.environmentRisks.includes("river_coastal"));
 
   // Base resilience score calculation
@@ -32,30 +34,35 @@ export function generateMockAnalysis(input: UserInput): DisasterAnalysisResult {
 
   if (isFloodScenario) {
     groundMemory = {
-      title: `${input.city} / ${input.district} - Tarihsel Taşkın Yatağı Hafızası`,
-      soilType: "Alüvyon Tabakası, Killi-Milli Dolgu ve Yüksek Taban Suyu",
-      historicalFact: `${input.neighborhood || input.district} bölgesi, tarihsel haritalarda aktif su havzası ve mevsimsel taşkın koludur. Aşırı yağışlarda zeminin su emme kapasitesi 15 dakikada sıfırlanır.`,
-      amplificationRisk: "Taban suyu seviyesi yüzeye 1-2 metre yakınlıktadır; şiddetli yağışta rögarlar geri basar ve bodrum/giriş katlarda anlık 50-100 cm su birikmesine yol açar.",
-      liquefactionTendency: "YÜKSEK",
-      warningBadge: "Kritik Taşkın & Zemin Doygunluğu"
+      title: `${input.city} / ${input.district} - Historical Floodplain Memory`,
+      soilType: "Alluvial Soil Layer, Clayey-Silt Backfill & High Water Table",
+      historicalFact: `The ${input.neighborhood || input.district} area is an active historical watershed and seasonal flood basin. During torrential rainfall, the soil absorption capacity drops to zero in under 15 minutes.`,
+      amplificationRisk: "The water table is within 1–2 meters of the surface; heavy cloudbursts cause municipal storm drains to backflow, creating immediate 50–100 cm inundation in ground and basement floors.",
+      liquefactionTendency: "HIGH",
+      warningBadge: "Critical Inundation & Soil Saturation"
     };
-  } else if (input.district.toLowerCase().includes("avcılar") || input.historicalGroundTag?.includes("dolgu")) {
+  } else if (
+    input.district.toLowerCase().includes("avcılar") || 
+    input.district.toLowerCase().includes("avcilar") || 
+    input.historicalGroundTag?.toLowerCase().includes("landfill") ||
+    input.historicalGroundTag?.toLowerCase().includes("dolgu")
+  ) {
     groundMemory = {
-      title: `${input.city} / ${input.district} - Sahil Kordonu & Sıvılaşma Hafızası`,
-      soilType: "Kıyı Dolgusu, Gevşek Kum-Silt ve Denizel Çökeller (Avcılar Formasyonu)",
-      historicalFact: "1999 Gölcük Depreminde merkez üssü 110 km mesafede olmasına karşın mikrobölgeleme rezonansı ve zemin büyütmesi sebebiyle Avcılar'da ağır yıkım kaydedilmiştir.",
-      amplificationRisk: "Zemin Büyütme Katsayısı (Amplification): ~2.4x. Sismik S dalgaları gevşek sahil dolgusunda tuzaklanarak yüzey titreşim süresini ve genliğini 2 kattan fazla uzatır.",
-      liquefactionTendency: "YÜKSEK",
-      warningBadge: "Kritik Sismik Büyütme (Rezonans)"
+      title: `${input.city} / ${input.district} - Coastal Landfill & Liquefaction Memory`,
+      soilType: "Coastal Reclamation Fill, Loose Sand-Silt & Marine Deposits (Avcılar Formation)",
+      historicalFact: "During the 1999 Mw 7.6 Gölcük Earthquake, severe structural collapse occurred in Avcılar despite being 110 km from the epicenter, driven by local micro-zonation resonance and soft soil wave trapping.",
+      amplificationRisk: "Soil Amplification Factor: ~2.4x. Seismic S-waves become trapped in loose coastal fill, more than doubling surface shaking duration and amplitude.",
+      liquefactionTendency: "HIGH",
+      warningBadge: "Critical Seismic Amplification (Resonance)"
     };
   } else {
     groundMemory = {
-      title: `${input.city} / ${input.district} - Mikrobölgeleme ve Zemin Profili`,
-      soilType: input.historicalGroundTag || "Karışık Zemin ve Ayrışmış Yamaç Molozu",
-      historicalFact: `${input.neighborhood || input.district} zemin tabakası geçmiş yer hareketlerinde bölgesel frekans uyumsuzluğu göstermiştir.`,
-      amplificationRisk: "Yapı periyodu ile zemin doğal salınım periyodunun çakışması durumunda kat ötelenmeleri artabilir.",
-      liquefactionTendency: isOldBuilding ? "ORTA" : "DÜŞÜK",
-      warningBadge: "Standart Mikrobölgeleme"
+      title: `${input.city} / ${input.district} - Micro-Zonation & Soil Profile`,
+      soilType: input.historicalGroundTag || "Heterogeneous Ground & Weathered Slope Debris",
+      historicalFact: `The ${input.neighborhood || input.district} sub-surface stratum has exhibited localized frequency shifts during historical tremors.`,
+      amplificationRisk: "Inter-story drifts can escalate when the building natural vibration period coincides with the dominant soil vibration period.",
+      liquefactionTendency: isOldBuilding ? "MEDIUM" : "LOW",
+      warningBadge: "Standard Micro-Zonation Profile"
     };
   }
 
@@ -65,56 +72,56 @@ export function generateMockAnalysis(input: UserInput): DisasterAnalysisResult {
   if (isFloodScenario) {
     hazards.push({
       rank: 1,
-      hazardName: "Eski Dere Yatağında Ani Su Taşkını ve Altyapı Geri Basması",
-      riskLevel: "YÜKSEK",
+      hazardName: "Flash Flooding in Historical Riverbed & Storm Drain Backflow",
+      riskLevel: "HIGH",
       probabilityScore: 88,
-      geologicalReasoning: `${input.neighborhood || input.district} bölgesinin vadi tabanında yer alması ve giriş/bodrum kat olması nedeniyle ani debi artışlarında ilk su baskını tehdidi altındadır.`,
-      immediateAction: "Priz hatlarını yerden en az 1.5 m yüksekte tutun; elektrik ana panosuna kaçak akım rölesi ve çekvalf taktırın."
+      geologicalReasoning: `Located in the valley basin of ${input.neighborhood || input.district} on the ground floor, the unit faces immediate inundation threats during cloudburst surges.`,
+      immediateAction: "Elevate all power outlets at least 1.5m above floor level; install check valves on sewer pipes and RCCB on the main breaker."
     });
     hazards.push({
       rank: 2,
-      hazardName: "Sismik Sarsıntı ve Yumuşak Alüvyon Zemin Deformasyonu",
-      riskLevel: isOldBuilding ? "YÜKSEK" : "ORTA",
+      hazardName: "Seismic Ground Shaking & Saturated Alluvial Deformation",
+      riskLevel: isOldBuilding ? "HIGH" : "MEDIUM",
       probabilityScore: 72,
-      geologicalReasoning: "Alüvyon katmanları suyla doygun olduğunda sismik sarsıntıda taşıma gücünü aniden kaybeder.",
-      immediateAction: "Ağır mobilyaları taşıyıcı kolon/perde betonlara ankrajlayın."
+      geologicalReasoning: "When alluvial soil layers become water-saturated, their bearing capacity drops precipitously during seismic tremors.",
+      immediateAction: "Anchor heavy furniture to load-bearing reinforced concrete columns or shear walls."
     });
     hazards.push({
       rank: 3,
-      hazardName: "Şebeke Kesintisi & Elektrik/Gaz Sızıntısı",
-      riskLevel: "ORTA",
+      hazardName: "Utility Grid Interruption & Gas/Electrical Hazard",
+      riskLevel: "MEDIUM",
       probabilityScore: 65,
-      geologicalReasoning: "Su basması durumunda zemin prizlerinin suyla teması elektrik kaçağına ve kombi tahliye borularının tıkanmasına yol açar.",
-      immediateAction: "Su basmasında ana sigortayı kuru eldivenle indirin, gaz vanasını kapatın."
+      geologicalReasoning: "Rising water contacting wall electrical points triggers circuit shorts and water heater vent blockages.",
+      immediateAction: "Shut off master electrical breaker with dry insulated tools upon water ingress; close gas cylinder/valves."
     });
   } else {
     hazards.push({
       rank: 1,
-      hazardName: `${input.city} / ${input.district} Ana Fay Kırığı ve Şiddetli Sismik İvme`,
-      riskLevel: "YÜKSEK",
+      hazardName: `${input.city} / ${input.district} Main Fault Rupture & Severe Ground Acceleration`,
+      riskLevel: "HIGH",
       probabilityScore: isOldBuilding ? 95 : 82,
-      geologicalReasoning: `${input.neighborhood || input.district} sismik tehlike haritasında fay hattı etki çemberindedir. ${
+      geologicalReasoning: `${input.neighborhood || input.district} sits within the primary seismic risk zone. ${
         isOldBuilding 
-          ? "1999 öncesi yapı standartları, korozyon ve zemin büyütmesi ivmeyi 2.4 kat artırmaktadır." 
-          : "Bina yeni olsa dahi yüksek ivme iç mobilyaları savurarak kaçış yollarını kilitler."
+          ? "Pre-1999 building code, potential rebar corrosion, and soil amplification multiply effective peak ground acceleration by ~2.4x." 
+          : "Even in modern compliant structures, high peak accelerations violently fling unanchored interior furniture, blocking escape routes."
       }`,
-      immediateAction: "Yatak odası ve koridordaki yüksek dolapları çelik L-profille ankrajlayın, camlara güvenlik filmi çekin."
+      immediateAction: "Anchor all high wardrobes and bookcases with heavy-duty steel L-brackets; apply safety film to window glass."
     });
     hazards.push({
       rank: 2,
-      hazardName: "Kıyı / Sahil Zemin Sıvılaşması ve Sahil Kordonu Deformasyonu",
-      riskLevel: "ORTA",
+      hazardName: "Coastal Fill Soil Liquefaction & Shoreline Lateral Spreading",
+      riskLevel: "MEDIUM",
       probabilityScore: 78,
-      geologicalReasoning: "Gevşek kumlu sahil katmanları sismik titreşimde su basıncını taşıyamayarak akışkanlaşır ve zemin oturmasına sebep olur.",
-      immediateAction: "Bina çıkış güzergahında acil toplanma rotasını deniz kenarından uzağa ve yüksek zeminlere planlayın."
+      geologicalReasoning: "Loose sandy coastal strata lose shear resistance under cyclic earthquake loading, leading to differential building settlement.",
+      immediateAction: "Pre-plan emergency evacuation route inland toward higher ground, away from coastal walls and reclaimed ground."
     });
     hazards.push({
       rank: 3,
-      hazardName: "Şiddetli Sarsıntı Sonrası Doğalgaz Yangını ve 72 Saatlik Kesinti",
-      riskLevel: "ORTA",
+      hazardName: "Post-Quake Natural Gas Rupture & 72-Hour Utility Grid Outage",
+      riskLevel: "MEDIUM",
       probabilityScore: 64,
-      geologicalReasoning: "Tesisat borularının duvar salınımlarında yırtılması ikincil yangınlara yol açabilir.",
-      immediateAction: "Ana gaz vanasına deprem anı otomatik sismik kesici selenoid vana taktırın."
+      geologicalReasoning: "Structural oscillations distort rigid gas piping, potentially causing joint fractures and secondary post-disaster fires.",
+      immediateAction: "Install an automatic seismic shutoff solenoid valve on the building gas intake line."
     });
   }
 
@@ -122,83 +129,83 @@ export function generateMockAnalysis(input: UserInput): DisasterAnalysisResult {
   const timeline: CrisisTimeline = isFloodScenario
     ? {
         phase60s: {
-          timeframe: "T+0 - 60 Saniye",
-          phaseName: "Taşkın / Ani Baskın Anı",
-          title: "Elektrik Güvenliği ve Hayvan/İlaç Kurtarma",
+          timeframe: "T+0 - 60 Seconds",
+          phaseName: "Immediate Inundation Inrush",
+          title: "Electrical Isolation & Pet/Medication Preservation",
           actions: [
-            "Priz hizasını aşan su temasından önce ana sigortayı kuru bir tahta çubuk veya yalıtımlı malzeme ile derhal indirin.",
-            "Dış kapıyı aniden açmayın; sokaktaki su seviyesi kapı eşiğini aştıysa basınç içeri hücum edebilir.",
-            "Kronik hastanın insülin ve hayati ilaç çantasını yüksek rafa/masaya alın."
+            "Before water reaches electrical sockets, immediately disconnect the master power breaker using a dry wooden pole or insulated gloves.",
+            "Never throw open the street door abruptly; if street water exceeds the threshold, hydrostatic pressure will burst inwards violently.",
+            "Transfer chronic patient's insulin and vital medicines to a high table or elevated shelf."
           ],
-          vulnerableCare: "Evcil hayvanı derhal sert gövdeli taşıma kutusuna (box) yerleştirin. Panikleyen kedi/köpek su sesinde saklanarak kaçabilir.",
-          safetyRule: "Asla suya batmış priz veya kablolara çıplak ayakla basmayın; elektrik çarpması birincil ölüm nedenidir.",
+          vulnerableCare: "Secure household pet immediately into a hard-shell carrier box. Panicked animals reflexively hide or escape under furniture.",
+          safetyRule: "Never step barefoot into standing water with submerged power strips; electrocution is a primary cause of flood fatalities.",
           badgeColor: "bg-cyan-500/15 text-cyan-300 border-cyan-500/30"
         },
         phase15m: {
-          timeframe: "T+1 - 15 Dakika",
-          phaseName: "Dikey Tahliye & Tesisat İzolasyonu",
-          title: "Giriş Kattan Üst Katlara Dikey Tahliye",
+          timeframe: "T+1 - 15 Minutes",
+          phaseName: "Vertical Evacuation & Utility Cutoff",
+          title: "Vertical Ascent from Ground Floor to Upper Levels",
           actions: [
-            "Sokak seviyesi su altındaysa yatay kaçış yerine bina merdivenlerinden üst kat komşularına dikey tahliye yapın.",
-            "Doğalgaz kombi ve ana sayacını kapatarak gaz sıkışmasını önleyin.",
-            "Su geçirmez afet çantasını sırta takarak iki eli boşta tutun."
+            "If street is submerged, execute vertical evacuation to upper-floor neighbors instead of risking horizontal street wading.",
+            "Shut off the natural gas boiler and master meter valve to prevent gas entrapment.",
+            "Fasten waterproof emergency disaster bag to your back to keep both hands free."
           ],
-          vulnerableCare: "Kronik hastanın insülinini termal çantaya koyarak yanınıza alın; evcil hayvanın tasmasını sabitleyin.",
-          safetyRule: "Bodrum kata asla geri inmeyin; kanalizasyon ve yağmur suyu ters basarak bodrumları dakikalar içinde doldurur.",
+          vulnerableCare: "Pack insulin into an insulated thermal pouch with ice pack; securely fasten pet leash.",
+          safetyRule: "Never descend into basements to retrieve valuables; sewer backflow fills basement cavities in under 3 minutes.",
           badgeColor: "bg-blue-500/15 text-blue-300 border-blue-500/30"
         },
         phase72h: {
-          timeframe: "T+1 - 72 Saat",
-          phaseName: "Hayatta Kalma & Salgın Önleme",
-          title: "Soğuk Zincir ve Hijyen Yönetimi",
+          timeframe: "T+1 - 72 Hours",
+          phaseName: "Survival & Epidemic Prevention",
+          title: "Cold-Chain & Clean Hydration Management",
           actions: [
-            "Kirlenen şebeke sularını kesinlikle içmeyin ve gıdalara temas ettirmeyin; tifo ve dizanteri riski başlar.",
-            "İnsülin soğuk zincirini kapalı buz aküleriyle güneş görmeyen yerde muhafaza edin.",
-            "AFAD ve belediye bot kurtarma ekiplerine pilli fener/düdükle konum bildirin."
+            "Strictly avoid municipal tap water and contaminated floodwaters for drinking or cooking; high risk of typhoid and dysentery.",
+            "Preserve insulin cold chain in sealed ice packs sheltered away from direct sunlight.",
+            "Signal rescue boats and search teams using high-frequency whistle and LED beacon."
           ],
-          vulnerableCare: "Kronik hastanın tansiyon ve şekerini düzenli takip edin; evcil hayvana kapalı pet şişe suyundan verin.",
-          safetyRule: "Sular çekilene kadar sele kapılmış elektrik direklerine ve hasarlı zeminlere 20 metreden fazla yaklaşmayın.",
+          vulnerableCare: "Monitor diabetic blood sugar and blood pressure regularly; provide pets only with sealed bottled drinking water.",
+          safetyRule: "Stay at least 20 meters away from submerged power poles, electrical transformers, and collapsed pavement.",
           badgeColor: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
         }
       }
     : {
         phase60s: {
-          timeframe: "T+0 - 60 Saniye",
-          phaseName: "Sarsıntı ve Yıkım Anı",
-          title: "Yatak Başı ve Yaşam Üçgeni Pozisyonu",
+          timeframe: "T+0 - 60 Seconds",
+          phaseName: "Shaking & Initial Inrush",
+          title: "Bedside & Life Triangle Positioning",
           actions: [
-            "Asla balkona veya merdiven boşluğuna koşmayın; merdivenler binanın ilk çöken elemanlarıdır.",
-            "Yatak odasındaki gardırobun devrilme açısından kaçarak baza ve masif komodin yanında cenin pozisyonu alın.",
-            "Yastık veya kalın battaniye ile baş ve ense bölgesini moloz/sıva düşmesine karşı siper edin."
+            "Never rush toward balconies or stairwells; stairs are often the first structural element to collapse during tremors.",
+            "Clear the toppling arc of bedroom wardrobes and adopt a fetal Drop-Cover-Hold On posture next to a sturdy bed base and nightstand.",
+            "Shield your head and neck with a dense pillow or thick folded blanket against falling ceiling plaster and glass."
           ],
-          vulnerableCare: "Bebeği hemen kucağınıza alıp göğsünüze yapıştırarak tek bir kitle halinde Çök-Kapan-Tutun yapın. Yaşlı bireyi yatağın güvenli iç duvar kenarına çekip başını koruyun.",
-          safetyRule: "Kapı pervazında beklemeyin; modern binalarda kapı eşikleri taşıyıcı değildir ve kapı sıkışarak kafayı ezebilir.",
+          vulnerableCare: "Instantly cradle infant tight against chest forming a single unit for Drop-Cover-Hold On. Guide elderly individual to the inner load-bearing wall, shielding their head.",
+          safetyRule: "Do not stand inside doorways; modern architectural frames are non-structural and shifting doors can jam or cause severe head trauma.",
           badgeColor: "bg-rose-500/15 text-rose-300 border-rose-500/30"
         },
         phase15m: {
-          timeframe: "T+1 - 15 Dakika",
-          phaseName: "Sarsıntı Sonu Tahliye & Tesisat",
-          title: "4. Kattan Güvenli Merdiven İnişi",
+          timeframe: "T+1 - 15 Minutes",
+          phaseName: "Post-Shaking Evacuation & Utility Cutoff",
+          title: "Safe Stair Descent from 4th Floor",
           actions: [
-            "Sarsıntı durur durmaz doğalgaz ana vanasını, elektrik sigortasını ve su vanasını derhal kapatın.",
-            "Asansörü KESİNLİKLE kullanmayın; halat kopması veya elektrik kesintisinde kuyuya düşme riski vardır.",
-            "Cam kırıklarına karşı kalın tabanlı ayakkabılarınızı giyin ve afet çantasını omuzlayın."
+            "The moment ground shaking ceases, immediately shut off the natural gas main valve, master electrical breaker, and water inlet.",
+            "NEVER take the elevator; risk of cable rupture, guide derailment, or sudden entrapment due to power grid failure.",
+            "Put on thick-soled boots against glass shards and sling the emergency disaster bag over your shoulders."
           ],
-          vulnerableCare: "Bebeği kanguruya bağlayarak her iki elinizi korkuluklara tutunmak için serbest bırakın. 65+ yaşlı bireye baston verin ve iki kişiyle refakat edin.",
-          safetyRule: "Merdivenlerde telaşla koşmayın; basamaklardaki döküntüler kaymaya ve izdihama yol açabilir.",
+          vulnerableCare: "Secure infant into a front chest sling/carrier to keep both hands free for gripping stair handrails. Provide cane and dual-person escort for elderly relative.",
+          safetyRule: "Do not rush or panic on stairwells; accumulated mortar dust and debris cause slips and dangerous human crushing.",
           badgeColor: "bg-amber-500/15 text-amber-300 border-amber-500/30"
         },
         phase72h: {
-          timeframe: "T+1 - 72 Saat",
-          phaseName: "Dış Desteksiz Hayatta Kalma",
-          title: "Toplanma Alanı & İlaç/Su Kotası",
+          timeframe: "T+1 - 72 Hours",
+          phaseName: "Autonomous Survival Without External Aid",
+          title: "Muster Zone Protocol & Water/Medication Rationing",
           actions: [
-            "Deniz kenarından ve sahil dolgusundan derhal uzaklaşarak iç kesimlerdeki resmi toplanma alanına geçin.",
-            "Kişi başı günlük 3 litre su kotasını sıkı denetleyin; ilk 72 saat susuzluk hayati risk doğurur.",
-            "Telefon şebekelerini meşgul etmeyin; iletişimi sadece SMS ve dinamolu acil durum radyosuyla sağlayın."
+            "Immediately evacuate inland away from sea walls and landfill zones toward designated official green muster parks.",
+            "Enforce strict rationing of the 3 liters/person/day drinking water quota; dehydration is the primary 72-hour threat.",
+            "Preserve cellular bandwidth; communicate strictly via SMS and receive official alerts via hand-crank emergency radio."
           ],
-          vulnerableCare: "Yaşlı bireyin 7 günlük kalp/tansiyon ilaçlarını saatinde verin. Bebeğin üşümesini önlemek için termal battaniyeyi sarın.",
-          safetyRule: "Yetkililer 'Yeşil Bina / Güvenli' onayı vermeden hiçbir sebeple eşya almak için hasarlı binaya geri girmeyin.",
+          vulnerableCare: "Administer scheduled 7-day cardiac/hypertension medications on time. Wrap infant in mylar emergency thermal blanket to prevent hypothermia.",
+          safetyRule: "Never re-enter a cracked or damaged structure to retrieve personal items until licensed civil engineers issue a Green Safe Placard.",
           badgeColor: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
         }
       };
@@ -206,57 +213,96 @@ export function generateMockAnalysis(input: UserInput): DisasterAnalysisResult {
   // 4. FURNITURE FIXING PLAN
   const fixingItems: FurnitureFixingItem[] = [];
   
-  if (input.roomRiskTags.some(t => t.includes("gardırop") || t.includes("dolap")) || input.roomMode === "photo") {
+  const hasWardrobe = input.roomRiskTags.some(t => 
+    t.toLowerCase().includes("wardrobe") || 
+    t.toLowerCase().includes("cabinet") || 
+    t.toLowerCase().includes("gardırop") || 
+    t.toLowerCase().includes("dolap")
+  ) || input.roomMode === "photo";
+
+  if (hasWardrobe) {
     fixingItems.push({
-      item: "Yatak Yanı Yüksek Ahşap Gardırop",
-      riskDescription: "Sarsıntı ivmesiyle doğrudan yatak üzerine devrilme yayındadır; saniyeler içinde ezilme ve çıkışı kapama riski taşır.",
-      fixingMethod: "En az 2 adet 50x50 mm çelik L-braket ve gazbeton/tuğla dübeli ile taşıyıcı duvara üst köşelerden 45 derece açıyla monte edilmelidir.",
-      urgency: "ACİL"
+      item: "Tall Bedroom Wooden Wardrobe / Cabinet",
+      riskDescription: "Positioned directly inside the forward toppling zone onto the bed; presents severe crush hazard and blocks egress doorway.",
+      fixingMethod: "Secure top corners to reinforced concrete wall using minimum two 50x50 mm steel L-brackets and heavy-duty masonry anchors at 45-degree angles.",
+      urgency: "CRITICAL"
     });
   }
 
-  if (input.roomRiskTags.some(t => t.includes("pencere") || t.includes("cam"))) {
+  const hasWindow = input.roomRiskTags.some(t => 
+    t.toLowerCase().includes("window") || 
+    t.toLowerCase().includes("glass") || 
+    t.toLowerCase().includes("pencere") || 
+    t.toLowerCase().includes("cam")
+  );
+
+  if (hasWindow) {
     fixingItems.push({
-      item: "Pencere Cam Panelleri ve Çerçevesi",
-      riskDescription: "Sismik dalgalarda kasa sıkışması sonucu temperli olmayan camlar patlayarak yatağa ve zemine şarapnel gibi dağılır.",
-      fixingMethod: "Cam yüzeyine şeffaf patlama önleyici güvenlik filmi (safety film) çekilmeli ve yatak camdan 1.5 m uzağa kaydırılmalıdır.",
-      urgency: "ACİL"
+      item: "Bedroom Window Glass Panels & Frame",
+      riskDescription: "Seismic racking causes non-tempered glass panes to shatter violently across the sleeping area like sharp shrapnel.",
+      fixingMethod: "Apply certified transparent anti-shatter safety film to all panes and shift bed at least 1.5 meters away from window line.",
+      urgency: "CRITICAL"
     });
   }
 
-  if (input.roomRiskTags.some(t => t.includes("tablo") || t.includes("raf"))) {
+  const hasShelf = input.roomRiskTags.some(t => 
+    t.toLowerCase().includes("shelf") || 
+    t.toLowerCase().includes("frame") || 
+    t.toLowerCase().includes("tablo") || 
+    t.toLowerCase().includes("raf")
+  );
+
+  if (hasShelf) {
     fixingItems.push({
-      item: "Yatak Üstü Duvar Rafı / Ağır Tablo",
-      riskDescription: "Düşey ivme etkisinde ilk saniyelerde düşerek baş/boyun travmalarına sebep olur.",
-      fixingMethod: "Yatak başucundaki tüm raflar sökülmeli, tablolar sadece kilitli deprem askı kancalarıyla başka bir duvara asılmalıdır.",
-      urgency: "ACİL"
+      item: "Overhead Wall Shelves & Heavy Framed Art",
+      riskDescription: "Vertical seismic ground accelerations dislodge unlatched items in the first seconds, causing direct head and neck trauma.",
+      fixingMethod: "Dismantle all shelves above headboards; re-hang artwork strictly using interlocking seismic locking anchor brackets.",
+      urgency: "CRITICAL"
     });
   }
 
-  if (input.roomRiskTags.some(t => t.includes("perde") || t.includes("pano") || t.includes("priz"))) {
+  const hasCurtainOrPanel = input.roomRiskTags.some(t => 
+    t.toLowerCase().includes("curtain") || 
+    t.toLowerCase().includes("panel") || 
+    t.toLowerCase().includes("socket") || 
+    t.toLowerCase().includes("perde") || 
+    t.toLowerCase().includes("pano") || 
+    t.toLowerCase().includes("priz")
+  );
+
+  if (hasCurtainOrPanel) {
     fixingItems.push({
-      item: "Elektrik Panosu / Su Baskını Seviyesi Yakınındaki Tül Perde",
-      riskDescription: "Kıvılcım veya kısa devrede anında tutuşarak kaçış koridorunu dumanla doldurur.",
-      fixingMethod: "Pano çevresindeki tekstil ürünleri uzaklaştırılmalı, priz hatları suya dayanıklı sızdırmaz kapaklarla korunmalıdır.",
-      urgency: "ACİL"
+      item: "Electrical Breaker Panel / Flammable Drapes Near Flood Level",
+      riskDescription: "Electrical sparking or water contact instantly ignites synthetic fabrics, filling the evacuation corridor with toxic smoke.",
+      fixingMethod: "Clear textile materials within 1 meter of panels; install IP65 waterproof sealed covers on lower wall sockets.",
+      urgency: "CRITICAL"
     });
   }
 
-  if (input.roomRiskTags.some(t => t.includes("koridor") || t.includes("ayakkabılık") || t.includes("kapı"))) {
+  const hasHallway = input.roomRiskTags.some(t => 
+    t.toLowerCase().includes("hallway") || 
+    t.toLowerCase().includes("shoe") || 
+    t.toLowerCase().includes("door") || 
+    t.toLowerCase().includes("koridor") || 
+    t.toLowerCase().includes("ayakkabılık") || 
+    t.toLowerCase().includes("kapı")
+  );
+
+  if (hasHallway) {
     fixingItems.push({
-      item: "Çıkış Koridoru Vestiyer / Ayakkabılık",
-      riskDescription: "Devrildiğinde dış kapının açılmasını engelleyerek daireyi kapana dönüştürür.",
-      fixingMethod: "Koridordaki eşyalar duvara sabitlenmeli, kapı kanadının açılış dairesi 90 derece tamamen boş bırakılmalıdır.",
-      urgency: "ACİL"
+      item: "Exit Corridor Shoe Cabinet & Wardrobe",
+      riskDescription: "When toppled, blocks the main front entry door from opening inward, transforming the apartment into an enclosed trap.",
+      fixingMethod: "Anchor corridor storage to side walls; maintain a completely clear 90-degree swing arc for the primary exit door.",
+      urgency: "CRITICAL"
     });
   }
 
   if (fixingItems.length === 0) {
     fixingItems.push({
-      item: "Yatak Odası Genel Hareketli Mobilyaları",
-      riskDescription: "Sabitlenmemiş komodin ve ayna gibi nesnelerin savrulması karanlıkta yaralanmaya yol açar.",
-      fixingMethod: "Tüm hareketli mobilyaların ayaklarına kaydırmaz taban ve üst kısımlarına sabitleme kayışı takılmalıdır.",
-      urgency: "ÖNEMLİ"
+      item: "General Bedroom Freestanding Furniture",
+      riskDescription: "Unanchored nightstands, mirrors, and vanity tables slide and topple during strong ground shaking.",
+      fixingMethod: "Attach anti-slip silicone pads beneath furniture legs and secure tall items with heavy-duty tension straps.",
+      urgency: "IMPORTANT"
     });
   }
 
@@ -264,38 +310,38 @@ export function generateMockAnalysis(input: UserInput): DisasterAnalysisResult {
   const bagItems: EmergencyBagItem[] = [
     {
       id: "gen-1",
-      item: "Yüksek Desibelli Acil Durum Düdüğü (Hane Başına 1'er Adet)",
-      category: "Genel",
-      priority: "Kritik",
-      details: "Toz ve enkaz altında ses telleri çabuk yorulur; düdük minimum enerjiyle 500m mesafeye ses iletir."
+      item: "High-Decibel Emergency Survival Whistle (1 per Person)",
+      category: "General",
+      priority: "Critical",
+      details: "Audible up to 500m under rubble; vocal cords exhaust rapidly while a whistle saves vital energy."
     },
     {
       id: "gen-2",
-      item: "Kişi Başı Günlük 3 Litre Kapalı İçme Suyu (72 Saatlik)",
-      category: "Genel",
-      priority: "Kritik",
-      details: "İlk 72 saat hayatta kalmanın en temel şartıdır; dayanıklı kapalı pet şişelerde saklanmalıdır."
+      item: "Sealed Drinking Water: 3 Liters / Person / Day (72-Hour Supply)",
+      category: "General",
+      priority: "Critical",
+      details: "Hydration is the indispensable prerequisite for 72-hour survival; keep stored in durable sealed PET bottles."
     },
     {
       id: "gen-3",
-      item: "Dinamolu / Pilli LED El Feneri ve Yedek Piller",
-      category: "Genel",
-      priority: "Kritik",
-      details: "Kıvılcım çıkarmayan sızdırmaz gövde; gaz sızıntısı ihtimaline karşı kibrit/çakmak asla kullanılmamalıdır."
+      item: "Hand-Crank Dynamo / Battery LED Flashlight & Spare Batteries",
+      category: "General",
+      priority: "Critical",
+      details: "Spark-proof sealed LED casing; never use open matches or lighters due to potential fractured gas pipes."
     },
     {
       id: "gen-4",
-      item: "Kapsamlı İlk Yardım Çantası ve Travma Turnikesi",
-      category: "Genel",
-      priority: "Kritik",
-      details: "Steril gazlı bez, elastik bandaj, yara merhemi, makas, boyunluk ve ağrı kesici."
+      item: "Comprehensive Trauma First Aid Kit & Hemostatic Tourniquet",
+      category: "General",
+      priority: "Critical",
+      details: "Sterile gauze rolls, elastic compression bandages, burn gel, medical shears, and certified CAT tourniquet."
     },
     {
       id: "gen-5",
-      item: "Çok Amaçlı Çakı ve Toz Maskesi (FFP2/FFP3)",
-      category: "Genel",
-      priority: "Önemli",
-      details: "Yıkılan alçı ve beton tozunun akciğerlere dolmasını önlemek için N95/FFP2 maske hayati önemdedir."
+      item: "Multi-Tool Pocket Knife & Particle Dust Masks (FFP2/FFP3/N95)",
+      category: "General",
+      priority: "Important",
+      details: "Filters pulverized concrete and silica dust to prevent acute respiratory distress during rubble transit."
     }
   ];
 
@@ -303,34 +349,34 @@ export function generateMockAnalysis(input: UserInput): DisasterAnalysisResult {
     bagItems.push(
       {
         id: "baby-1",
-        item: "Bebek Maması ve Biberon (72 Saatlik)",
-        category: "Bebek (0-3 Yaş)",
-        priority: "Kritik",
-        details: "Pişirme ve ısıtma gerektirmeyen hazır kavanoz veya toz mama + steril kapalı su.",
+        item: "Infant Formula & Sterile Feeding Bottles (72-Hour Supply)",
+        category: "Infant (0-3)",
+        priority: "Critical",
+        details: "Ready-to-feed formula jars or pre-measured powder requiring zero cooking + sealed sterile water.",
         forGroup: "baby"
       },
       {
         id: "baby-2",
-        item: "Bebek Taşıma Kangurusu / Sling",
-        category: "Bebek (0-3 Yaş)",
-        priority: "Kritik",
-        details: "4. kattan merdiven tahliyesinde iki elinizin de korkuluklara tutunabilmesini sağlar.",
+        item: "Ergonomic Baby Carrier Sling",
+        category: "Infant (0-3)",
+        priority: "Critical",
+        details: "Enables safe descent down 4 flights of stairs while leaving both parental hands free for handrails.",
         forGroup: "baby"
       },
       {
         id: "baby-3",
-        item: "Bebek Bezi, Islak Mendil ve Pişik Kremi",
-        category: "Bebek (0-3 Yaş)",
-        priority: "Önemli",
-        details: "Hijyenik kilitli poşetler içinde en az 18 adet bez ve seyahat tipi ıslak mendil.",
+        item: "Hypoallergenic Diapers, Wet Wipes & Rash Barrier Cream",
+        category: "Infant (0-3)",
+        priority: "Important",
+        details: "At least 18 sealed diapers in waterproof ziplock bags with travel-size antiseptic wipes.",
         forGroup: "baby"
       },
       {
         id: "baby-4",
-        item: "Bebek Aşı Kartı ve Kimlik Fotokopisi",
-        category: "Bebek (0-3 Yaş)",
-        priority: "Kritik",
-        details: "Su geçirmez kilitli torba içinde güncel aşı ve sağlık bilgileri.",
+        item: "Child Vaccination Records & Identification Copies",
+        category: "Infant (0-3)",
+        priority: "Critical",
+        details: "Photocopies of child ID and vaccination history sealed inside a waterproof sleeve.",
         forGroup: "baby"
       }
     );
@@ -340,26 +386,26 @@ export function generateMockAnalysis(input: UserInput): DisasterAnalysisResult {
     bagItems.push(
       {
         id: "elderly-1",
-        item: "Kronik Kalp/Tansiyon İlaçları ve Rapor Kopyası (7 Günlük)",
-        category: "Yaşlı (65+)",
-        priority: "Kritik",
-        details: "Orijinal kutusunda güncel hekim raporu ve acil kullanım çizelgesi ile birlikte.",
+        item: "Prescription Cardiac / Hypertension Medication & Dosing Schedule (7-Day)",
+        category: "Elderly (65+)",
+        priority: "Critical",
+        details: "Kept in original pharmacy packaging with physician prescription copy and dosing timetable.",
         forGroup: "elderly"
       },
       {
         id: "elderly-2",
-        item: "Yedek Numaralı Gözlük ve İşitme Cihazı Pilleri",
-        category: "Yaşlı (65+)",
-        priority: "Kritik",
-        details: "Panik ve toz ortamında duyu kaybını önlemek için yedek optik ve akustik destek.",
+        item: "Spare Prescription Eyeglasses & Hearing Aid Batteries",
+        category: "Elderly (65+)",
+        priority: "Critical",
+        details: "Preserves vital sensory orientation and balance in dark, dust-filled emergency stairwells.",
         forGroup: "elderly"
       },
       {
         id: "elderly-3",
-        item: "Katlanabilir Acil Tahliye Bastonu / Yürüteç",
-        category: "Yaşlı (65+)",
-        priority: "Önemli",
-        details: "Molozlu zeminde ve karanlık merdivenlerde denge kaybını engeller.",
+        item: "Foldable Evacuation Walking Cane / Quad-Pod",
+        category: "Elderly (65+)",
+        priority: "Important",
+        details: "Prevents tripping and falls over broken pavement, shattered masonry, and dark stair steps.",
         forGroup: "elderly"
       }
     );
@@ -369,18 +415,18 @@ export function generateMockAnalysis(input: UserInput): DisasterAnalysisResult {
     bagItems.push(
       {
         id: "chr-1",
-        item: "Termal İnsülin / Soğuk Zincir Taşıma Çantası ve Buz Aküsü",
-        category: "Kronik Hasta / İlaç",
-        priority: "Kritik",
-        details: "Elektrik kesintisinde veya tahliyede 48 saate kadar ilaç sıcaklığını 2-8°C arasında korur.",
+        item: "Thermal Insulin Cold-Chain Carrying Pouch & Sealed Ice Pack",
+        category: "Chronic / Medication",
+        priority: "Critical",
+        details: "Preserves insulin at 2–8°C for up to 48 hours during total power grid failure.",
         forGroup: "chronic_illness"
       },
       {
         id: "chr-2",
-        item: "Glukometre / Tansiyon Ölçer ve Yedek Şeritler",
-        category: "Kronik Hasta / İlaç",
-        priority: "Önemli",
-        details: "Stres ve panik kaynaklı ani krizleri takip etmek için taşınabilir medikal cihaz.",
+        item: "Portable Blood Glucose Meter / Sphygmomanometer & Test Strips",
+        category: "Chronic / Medication",
+        priority: "Important",
+        details: "Monitors acute stress-induced glycemic spikes or hypertension crises during displacement.",
         forGroup: "chronic_illness"
       }
     );
@@ -390,18 +436,18 @@ export function generateMockAnalysis(input: UserInput): DisasterAnalysisResult {
     bagItems.push(
       {
         id: "pet-1",
-        item: "Sert Gövdeli Evcil Hayvan Taşıma Kutusu (Box) ve Göğüs Tasması",
-        category: "Evcil Hayvan",
-        priority: "Kritik",
-        details: "Panikleyen hayvanın kaçmasını, yaralanmasını ve enkazda kaybolmasını önler.",
+        item: "Hard-Shell Pet Carrier Box & Reinforced Harness/Leash",
+        category: "Pet",
+        priority: "Critical",
+        details: "Prevents panicked cats or dogs from fleeing, getting crushed, or lost amid sirens and rubble.",
         forGroup: "pet"
       },
       {
         id: "pet-2",
-        item: "3 Günlük Kuru Mama, Katlanabilir Su Kabı ve Aşı Karnesi",
-        category: "Evcil Hayvan",
-        priority: "Önemli",
-        details: "Toplanma alanlarında ve çadır kentlerde kabul için mikroçip/aşı bilgisi şarttır.",
+        item: "3-Day Dry Pet Food Supply, Collapsible Bowl & Vaccination Passport",
+        category: "Pet",
+        priority: "Important",
+        details: "Microchip records and rabies vaccination papers required for admission into official tent shelters.",
         forGroup: "pet"
       }
     );
@@ -411,75 +457,75 @@ export function generateMockAnalysis(input: UserInput): DisasterAnalysisResult {
     bagItems.push(
       {
         id: "dis-1",
-        item: "Acil Tahliye Transfer Kemeri / Taşıma Şiltesi",
-        category: "Engelli / Kısıtlı",
-        priority: "Kritik",
-        details: "Asansörler çalışmayacağından merdivenlerden iki kişiyle güvenli transfer sağlamak için.",
+        item: "Emergency Evacuation Transfer Sling / Rescue Carrying Sheet",
+        category: "Mobility-Impaired",
+        priority: "Critical",
+        details: "Enables two people to safely carry a mobility-impaired individual down stairs when elevators fail.",
         forGroup: "disabled"
       },
       {
         id: "dis-2",
-        item: "Sesli / Flaşörlü Konum Belirleyici LED Fener",
-        category: "Engelli / Kısıtlı",
-        priority: "Kritik",
-        details: "Arama kurtarma ekiplerine yönlendirme sağlayan sürekli yanıp sönen acil yardım ışığı.",
+        item: "High-Visibility Flashing LED Beacon & Audio Locator",
+        category: "Mobility-Impaired",
+        priority: "Critical",
+        details: "Continuous strobe beacon guiding SAR rescue teams directly to trapped individuals.",
         forGroup: "disabled"
       }
     );
   }
 
   return {
-    summary: `${input.city} ili ${input.district} ilçesi ${input.neighborhood ? `(${input.neighborhood})` : ""} bölgesinde, ${
-      isOldBuilding ? "1999 öncesi yapılmış" : isPost2018 ? "2018 sonrası güncel yönetmelikli" : "2000-2018 arası"
-    } binanızda, ${input.floorNumber}. katta ${input.householdCount} kişilik hane için tarihsel zemin hafızası ve kriz simülasyonu analiz edildi. ${
+    summary: `Comprehensive disaster resilience analysis conducted for a ${input.householdCount}-person household in ${input.city}, ${input.district} ${input.neighborhood ? `(${input.neighborhood})` : ""}, residing on Floor ${input.floorNumber} of a ${
+      isOldBuilding ? "pre-1999 structure" : isPost2018 ? "post-2018 modern seismic-compliant building" : "2000-2018 transitional code structure"
+    }. Historical ground memory and emergency action simulation have been prioritized for ${
       isFloodScenario
-        ? "Taşkın ve altyapı geri basma riski önceliklendirildi."
-        : "Sismik ivme ve zemin büyütmesi rezonans riski önceliklendirildi."
+        ? "flash flooding, high water table saturation, and municipal sewer backflow."
+        : "seismic ground acceleration, soft-soil amplification resonance, and non-structural toppling risks."
     }`,
     overallResilienceScore: resilienceScore,
     sdgAlignment: {
-      sdg11_5: `SDG 11.5 Doğrudan Katkı: ${
+      sdg11_5: `SDG 11.5 Direct Contribution: ${
         input.vulnerableGroups.includes("baby") || input.vulnerableGroups.includes("elderly")
-          ? "Bebek ve yaşlı bireylerin 4. kattan tahliyesinde düşme ve ezilme riskini minimize eder."
-          : "Hane içi fiziksel tuzakları nötralize ederek can güvenliği kırılganlığını minimize eder."
+          ? "Eliminates non-structural crush traps and optimizes stair descent protocols for infants and elderly residents, minimizing fatality risks."
+          : "Neutralizes domestic physical hazards to protect household lives and reduce disaster-induced injuries."
       }`,
-      sdg13_1: `SDG 13.1 Doğrudan Katkı: ${input.city} coğrafyasındaki ${isFloodScenario ? "iklim/aşırı yağış taşkınlarına" : "sismik tehlikelere"} karşı 72 saatlik dış desteksiz hayatta kalma ve uyum kapasitesini güçlendirir.`,
-      impactMetric: `Uygulanacak eşya sabitleme ve zaman çizelgesi protokolü ile hane afet dirençlilik kapasitesi %${Math.min(95, resilienceScore + 40)} seviyesine yükselecektir.`
+      sdg13_1: `SDG 13.1 Direct Contribution: Strengthens autonomous 72-hour survival capacity against ${input.city}'s severe ${isFloodScenario ? "climate-driven flood surges" : "seismic ground motions"}.`,
+      impactMetric: `Implementing mechanical furniture anchoring and the synchronized crisis timeline elevates household resilience to ${Math.min(95, resilienceScore + 40)}%.`
     },
     historicalGroundMemory: groundMemory,
     disasterMatrix: hazards,
     crisisTimeline: timeline,
     roomSafetyGuide: {
       furnitureFixingPlan: fixingItems,
-      bedRelocationAdvice: input.roomRiskTags.some(t => t.includes("pencere"))
-        ? "Yatak doğrudan pencere camından en az 1.5 - 2 metre uzağa, iç bölme duvarı boyunca ve gardırobun devrilme açısının dışına çekilmelidir."
-        : "Yatak odası kapısının açılış yönünü kesmeyecek ve yüksek mobilyalardan en az 1 metre uzakta kalacak şekilde konumlandırılmalıdır.",
+      bedRelocationAdvice: hasWindow
+        ? "Reposition bed at least 1.5–2 meters inward from exterior window glass along an interior load-bearing partition, well outside the toppling arc of tall storage units."
+        : "Position bed so it does not obstruct the 90-degree opening arc of the bedroom door, keeping at least 1 meter clearance from tall furniture.",
       lifeTriangleSpot: {
-        locationName: isFloodScenario ? "Yüksek Masa Kenarı ve Masif Gardırop Boşluğu" : "Baza Yanı ve Masif Dolu Mobilya Kenarı",
+        locationName: isFloodScenario ? "Elevated Platform Edge & Heavy Table Void" : "Bed Base & Solid Nightstand Compression Void",
         coordinatesDescription: isFloodScenario
-          ? "Giriş katta su seviyesi yükselmesine karşı odanın en yüksek platformu yanında, elektrik kablolarından arındırılmış alan."
-          : "Yatağın iç duvara bakan yan boşluğunda, masif komodin veya dolu baza yanında cenin pozisyonunda Çök-Kapan-Tutun duruşu.",
+          ? "Adjacent to the highest solid elevation in the room, strictly separated from floor-level electrical wiring."
+          : "Along the interior partition wall between the heavy nightstand and the loaded bed base, assuming a compact fetal Drop-Cover-Hold On posture.",
         safetyRationale: isFloodScenario
-          ? "Yüksek platformlar su basmasında ilk 15 dakikada kuru kalmayı ve elektrik temasından korunmayı sağlar."
-          : "Tavan çökmesi veya ağır sıva düşmesinde masif yatak kasası döşemenin yere sıfırlanmasını engelleyerek 40-60 cm hayati yaşam boşluğu (life triangle) oluşturur."
+          ? "Elevated interior platforms ensure staying dry during the first 15 minutes while shielding occupants from submerged wiring."
+          : "During ceiling plaster detachment or partial structural failure, the rigid bed frame prevents pancake floor collapse, preserving a 40–60 cm survivable void (life triangle)."
       },
       emergencyBagLocation: isFloodScenario
-        ? "Yerden en az 130 cm yüksekte, duvara sabit askıda veya dolap üst rafında; su basmasında ıslanmayacak konumda."
-        : "Yatak odası çıkış kapısının hemen bitişiğindeki duvara monte edilmiş askıda, karanlıkta el yordamıyla 5 saniyede ulaşılabilecek yükseklikte (yerden 110 cm)."
+        ? "Mounted at least 130 cm above floor level on a dedicated wall bracket or upper shelf to prevent floodwater soaking."
+        : "Wall-mounted immediately adjacent to the bedroom exit door at 110 cm height, reachable within 5 seconds in total darkness."
     },
     emergencyBagChecklist: bagItems,
     ethicalGuardrails: {
-      disclaimer: "Bu rapor AFAD, AKUT ve BM Sendai Çerçevesi saha yönergeleri temel alınarak oluşturulmuş yapay zekâ destekli bir hazırlık rehberidir. İnşaat mühendisliği yapısal karot/dayanıklılık testi veya tıbbi teşhis/reçete yerine geçmez.",
-      engineeringNote: "Bina taşıyıcı sisteminizin deprem performansı için Çevre, Şehircilik ve İklim Değişikliği Bakanlığı'ndan yetkili kuruluşlarca bina performans analizi yaptırılmalıdır.",
-      medicalNote: "Afet çantasında listelenen ilaçlar sadece hanedeki bireylerin hekimleri tarafından reçete edilmiş güncel ilaçların kesintiye uğramaması için yedekleme tavsiyesidir. Yeni ilaç kullanımı hekim onayına tabidir.",
+      disclaimer: "This report is an AI-powered preparedness roadmap based on AFAD, UNDRR Sendai Framework, and international emergency protocols. It does NOT substitute for official civil engineering core testing (karot), structural integrity certificates, or physician medical prescriptions.",
+      engineeringNote: "For certified building structural performance, engage authorized civil engineering consulting firms and municipal disaster evaluation bureaus.",
+      medicalNote: "Medication items listed represent logistical backups of existing physician-prescribed treatments; starting new medications requires direct medical consultation.",
       officialSources: [
-        "AFAD - T.C. İçişleri Bakanlığı Afet ve Acil Durum Yönetimi Başkanlığı (afad.gov.tr)",
-        "BM Afet Risklerinin Azaltılması Ofisi (UNDRR - Sendai Framework for Disaster Risk Reduction 2015-2030)",
-        "TMMOB İnşaat Mühendisleri Odası Deprem ve Yapı Kılavuzları",
-        "Türk Kızılayı Afet ve Acil Durum Hazırlık Yönergeleri"
+        "AFAD - Republic of Türkiye Disaster and Emergency Management Authority (afad.gov.tr)",
+        "UNDRR - United Nations Office for Disaster Risk Reduction (Sendai Framework 2015-2030)",
+        "Chamber of Civil Engineers (TMMOB) Earthquake & Structural Guidelines",
+        "Turkish Red Crescent Disaster & Emergency Preparedness Protocols"
       ]
     },
-    analyzedAt: new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }),
+    analyzedAt: new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
     isSimulated: true
   };
 }

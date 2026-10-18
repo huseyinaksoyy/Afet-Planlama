@@ -26,30 +26,30 @@ ${SYSTEM_ROLE_PROMPT}
 
 ${CHAIN_OF_THOUGHT_INSTRUCTIONS}
 
-FEW-SHOT ÖRNEK GİRDİ VE ÇIKTI:
-Girdi: ${JSON.stringify(FEW_SHOT_EXAMPLE.input, null, 2)}
-Çıktı (Strict JSON): ${JSON.stringify(FEW_SHOT_EXAMPLE.output, null, 2)}
+FEW-SHOT EXAMPLE INPUT AND OUTPUT:
+Input: ${JSON.stringify(FEW_SHOT_EXAMPLE.input, null, 2)}
+Output (Strict JSON): ${JSON.stringify(FEW_SHOT_EXAMPLE.output, null, 2)}
 
 ${ETHICAL_GUARDRAILS_PROMPT}
 
 ---
-ŞİMDİ AŞAĞIDAKİ GERÇEK KULLANICI VERİSİNİ AYNI ADIMLARLA ANALİZ ET VE SADECE JSON FORMATINDA DÖNDÜR:
-KULLANICI VERİSİ:
-- İl: ${input.city}
-- İlçe: ${input.district}
-- Mahalle / Sokak Detayı: ${input.neighborhood || "Belirtilmedi"}
-- Tarihsel Zemin / Mikrobölgeleme Bilgisi: ${input.historicalGroundTag || "Belirtilmedi"}
-- Bina Yapım Yılı / Türü: ${input.buildingAge}
-- Kat Seviyesi: ${input.floorLevel} (Kat No: ${input.floorNumber})
-- Yakın Çevre Riskleri: ${input.environmentRisks.join(", ") || "Belirtilmedi"}
-- Hane Birey Sayısı: ${input.householdCount}
-- Kırılgan Gruplar: ${input.vulnerableGroups.join(", ") || "Yok"}
-- Oda Risk Modu: ${input.roomMode}
-- Seçilen Oda İçi Risk Etiketleri: ${input.roomRiskTags.join("; ") || "Belirtilmedi"}
-- Varsa Kullanıcı Notu: ${input.customNotes || "Yok"}
-${input.roomPhotoBase64 ? "- KULLANICI ODA FOTOĞRAFI YÜKLEDİ: Ekteki fotoğrafı inceleyerek gardırop, pencere, yatak ve kaçış kapısı risklerini tespit et." : ""}
+NOW ANALYZE THE FOLLOWING USER DATA FOLLOWING THE EXACT 7 STEPS AND RETURN ONLY VALID JSON IN ENGLISH:
+USER DATA:
+- City: ${input.city}
+- District: ${input.district}
+- Neighborhood / Street Detail: ${input.neighborhood || "Not specified"}
+- Historical Ground Memory / Micro-Zonation: ${input.historicalGroundTag || "Not specified"}
+- Building Construction Era: ${input.buildingAge}
+- Floor Level: ${input.floorLevel} (Floor Number: ${input.floorNumber})
+- Proximity Environmental Risks: ${input.environmentRisks.join(", ") || "None specified"}
+- Household Size: ${input.householdCount} people
+- Vulnerable Household Profiles: ${input.vulnerableGroups.join(", ") || "None"}
+- Room Assessment Mode: ${input.roomMode}
+- Selected Room Risk Tags: ${input.roomRiskTags.join("; ") || "None"}
+- User Specific Notes: ${input.customNotes || "None"}
+${input.roomPhotoBase64 ? "- USER UPLOADED ROOM PHOTO: Analyze the attached image to detect wardrobes, windows, bed placement, and evacuation door hazards." : ""}
 
-ÖNEMLİ: Yalnızca JSON formatında yanıt ver. Hiçbir fazladan selamlama, markdown öncesi/sonrası açıklama metni ekleme.
+CRITICAL: Return output strictly in valid JSON matching the Few-Shot schema. Do not prepend markdown formatting or conversational text.
 `;
 
     // Try Gemini 2.5 Flash / 1.5 Flash via REST API endpoint with structured JSON
@@ -132,7 +132,7 @@ ${input.roomPhotoBase64 ? "- KULLANICI ODA FOTOĞRAFI YÜKLEDİ: Ekteki fotoğra
     console.error("Gemini API call failed, providing high-fidelity fallback:", error);
     // Graceful fallback so demo never fails during presentation
     const mock = generateMockAnalysis(input);
-    mock.summary = `[Gemini Live API geçici olarak yanıt vermedi; Akıllı Yedek Güvenlik Motoru devreye girdi] ${mock.summary}`;
+    mock.summary = `[Gemini Live API temporarily unavailable; Intelligent Fallback Resilience Engine activated] ${mock.summary}`;
     return mock;
   }
 }

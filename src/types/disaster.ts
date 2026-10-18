@@ -19,7 +19,7 @@ export interface UserInput {
 export interface HazardRisk {
   rank: number;
   hazardName: string;
-  riskLevel: "YÜKSEK" | "ORTA" | "DÜŞÜK";
+  riskLevel: "HIGH" | "MEDIUM" | "LOW" | "YÜKSEK" | "ORTA" | "DÜŞÜK";
   probabilityScore: number; // 0 - 100
   geologicalReasoning: string;
   immediateAction: string;
@@ -30,7 +30,7 @@ export interface HistoricalGroundMemory {
   soilType: string;
   historicalFact: string;
   amplificationRisk: string;
-  liquefactionTendency: "YÜKSEK" | "ORTA" | "DÜŞÜK";
+  liquefactionTendency: "HIGH" | "MEDIUM" | "LOW" | "YÜKSEK" | "ORTA" | "DÜŞÜK";
   warningBadge: string;
 }
 
@@ -54,7 +54,7 @@ export interface FurnitureFixingItem {
   item: string;
   riskDescription: string;
   fixingMethod: string;
-  urgency: "ACİL" | "ÖNEMLİ" | "STANDART";
+  urgency: "CRITICAL" | "IMPORTANT" | "STANDARD" | "ACİL" | "ÖNEMLİ" | "STANDART";
 }
 
 export interface LifeTriangleSpot {
@@ -73,8 +73,8 @@ export interface RoomSafetyGuide {
 export interface EmergencyBagItem {
   id: string;
   item: string;
-  category: "Genel" | "Bebek (0-3 Yaş)" | "Yaşlı (65+)" | "Kronik Hasta / İlaç" | "Engelli / Kısıtlı" | "Evcil Hayvan";
-  priority: "Kritik" | "Önemli" | "Destek";
+  category: "General" | "Infant (0-3)" | "Elderly (65+)" | "Chronic / Medication" | "Mobility-Impaired" | "Pet" | string;
+  priority: "Critical" | "Important" | "Support" | "Kritik" | "Önemli" | "Destek";
   details: string;
   forGroup?: string;
 }

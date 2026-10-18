@@ -2,16 +2,12 @@
 
 import React, { useState } from "react";
 import { 
-  DisasterAnalysisResult, 
-  HazardRisk, 
-  FurnitureFixingItem, 
-  EmergencyBagItem 
+  DisasterAnalysisResult 
 } from "@/types/disaster";
 import { 
   AlertTriangle, 
   ShieldCheck, 
   CheckCircle2, 
-  Circle, 
   Compass, 
   Wrench, 
   HeartHandshake, 
@@ -19,21 +15,11 @@ import {
   Info, 
   Printer, 
   Sparkles, 
-  Baby, 
-  UserCheck, 
-  Pill, 
-  Accessibility, 
-  Layers, 
-  Flame, 
   ShieldAlert, 
-  ArrowRight,
   BookmarkCheck,
   Check,
   Clock,
   MapPin,
-  Footprints,
-  Droplets,
-  ZapOff,
   Activity
 } from "lucide-react";
 
@@ -75,13 +61,13 @@ export default function OutputPanel({
 
         <div className="space-y-2 max-w-md">
           <h3 className="text-lg font-bold text-white">
-            Çok Katmanlı Yapay Zekâ Analizi Yürütülüyor
+            Executing Multi-Layer Generative AI Analysis
           </h3>
           <p className="text-sm text-blue-400 font-medium animate-pulse">
-            {loadingStepText || "Gemini 2.5 Flash ile hane afet modeli hesaplanıyor..."}
+            {loadingStepText || "Calculating household disaster resilience model with Gemini 2.5 Flash..."}
           </p>
           <p className="text-xs text-slate-400 pt-2 leading-relaxed">
-            AFAD standartları, ilçe jeolojik parametreleri, kırılgan gruplar ve oda mekaniği Chain-of-Thought zincirinde sentezleniyor.
+            Synthesizing geological soil data, vulnerable profiles, and room kinematics through the Chain-of-Thought pipeline.
           </p>
         </div>
 
@@ -105,10 +91,10 @@ export default function OutputPanel({
 
         <div className="space-y-2 max-w-md">
           <h3 className="text-xl font-black text-white">
-            Hane ve Oda Dirençlilik Raporu Henüz Oluşturulmadı
+            Household & Room Resilience Report Not Yet Generated
           </h3>
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-            Sol panelden bina verilerinizi girin, odanızın fotoğrafını yükleyin veya hazır etiketleri seçerek analizi başlatın.
+            Enter your building details on the left, upload a room photo or select preset hazard tags, and start the analysis.
           </p>
         </div>
 
@@ -116,18 +102,18 @@ export default function OutputPanel({
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full max-w-lg text-left">
           <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
             <span className="text-[10px] font-bold text-amber-400 block mb-1">SDG 11.5</span>
-            <div className="text-xs font-bold text-slate-200">Kırılgan Grup Koruması</div>
-            <p className="text-[10px] text-slate-400 mt-1">Bebek, yaşlı ve engelli bireylere özel tahliye ve çanta.</p>
+            <div className="text-xs font-bold text-slate-200">Vulnerable Group Protection</div>
+            <p className="text-[10px] text-slate-400 mt-1">Tailored evacuation timelines and kits for infants, elderly, and disabled.</p>
           </div>
           <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
             <span className="text-[10px] font-bold text-emerald-400 block mb-1">SDG 13.1</span>
-            <div className="text-xs font-bold text-slate-200">İklim & Afet Uyumu</div>
-            <p className="text-[10px] text-slate-400 mt-1">72 saatlik dış yardımsız hayatta kalma kapasitesi.</p>
+            <div className="text-xs font-bold text-slate-200">Climate & Disaster Adaptation</div>
+            <p className="text-[10px] text-slate-400 mt-1">Autonomous 72-hour survival and adaptive capacity without external aid.</p>
           </div>
           <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
             <span className="text-[10px] font-bold text-purple-400 block mb-1">VISION AI</span>
-            <div className="text-xs font-bold text-slate-200">Mekânsal Sabitleme</div>
-            <p className="text-[10px] text-slate-400 mt-1">Oda fotoğrafından devrilme açısı ve hayat üçgeni tespiti.</p>
+            <div className="text-xs font-bold text-slate-200">Spatial Anchoring</div>
+            <p className="text-[10px] text-slate-400 mt-1">Toppling kinematics, window blast zones, and Life Triangle coordinates.</p>
           </div>
         </div>
 
@@ -139,7 +125,7 @@ export default function OutputPanel({
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 shadow-lg shadow-amber-500/20 transition-all hover:scale-105"
           >
             <Sparkles className="w-4 h-4" />
-            Canlı Demo Senaryosunu Başlat (Avcılar 1998)
+            Launch Live Demo Scenario (Avcılar Quake 1998)
           </button>
         </div>
       </div>
@@ -155,25 +141,25 @@ export default function OutputPanel({
   return (
     <div className="space-y-6 text-slate-100">
       
-      {/* RAPOR BAŞLIĞI VE ÖZET BANNER */}
+      {/* REPORT HEADER & SUMMARY BANNER */}
       <div className="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800 shadow-xl space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800/80">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                Resmi AI Analiz Raporu
+                Official AI Analysis Report
               </span>
               <span className="text-xs text-slate-400">
-                Saat: {result.analyzedAt}
+                Time: {result.analyzedAt}
               </span>
               {result.isSimulated && (
                 <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-500/10 text-blue-300 border border-blue-500/20">
-                  Akıllı Simülasyon
+                  Intelligent Simulation
                 </span>
               )}
             </div>
             <h2 className="text-lg sm:text-xl font-black text-white">
-              Kişiselleştirilmiş Hane ve Oda Eylem Planı
+              Personalized Household & Room Action Plan
             </h2>
           </div>
 
@@ -181,26 +167,26 @@ export default function OutputPanel({
             <button
               onClick={onPrint}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
-              title="Raporu Yazdır veya PDF olarak kaydet"
+              title="Print Action Plan / Save PDF"
             >
               <Printer className="w-3.5 h-3.5 text-slate-400" />
-              Yazdır / PDF
+              Print / PDF
             </button>
           </div>
         </div>
 
-        {/* Skor & İlerleme Göstergesi */}
+        {/* Score & Progress Meters */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between">
-            <div className="text-xs text-slate-400 font-medium">Başlangıç Dirençlilik Skoru</div>
+            <div className="text-xs text-slate-400 font-medium">Baseline Resilience Score</div>
             <div className="flex items-baseline gap-2 mt-1">
               <span className="text-2xl sm:text-3xl font-black text-white">
-                %{result.overallResilienceScore}
+                {result.overallResilienceScore}%
               </span>
               <span className={`text-xs font-bold ${
                 result.overallResilienceScore < 50 ? "text-rose-400" : "text-amber-400"
               }`}>
-                {result.overallResilienceScore < 50 ? "Yüksek Risk / Kritik" : "Orta Direnç"}
+                {result.overallResilienceScore < 50 ? "High Risk / Critical" : "Moderate Resilience"}
               </span>
             </div>
             <div className="w-full bg-slate-800 rounded-full h-2 mt-2 overflow-hidden">
@@ -214,13 +200,13 @@ export default function OutputPanel({
           </div>
 
           <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between">
-            <div className="text-xs text-slate-400 font-medium">Eylemler Uygulanınca Hedef Skor</div>
+            <div className="text-xs text-slate-400 font-medium">Target Score Post-Mitigation</div>
             <div className="flex items-baseline gap-2 mt-1">
               <span className="text-2xl sm:text-3xl font-black text-emerald-400">
-                %{boostedResilienceScore}
+                {boostedResilienceScore}%
               </span>
               <span className="text-xs font-bold text-emerald-400">
-                (+%{boostedResilienceScore - result.overallResilienceScore} Kazanç)
+                (+{boostedResilienceScore - result.overallResilienceScore}% Gain)
               </span>
             </div>
             <div className="w-full bg-slate-800 rounded-full h-2 mt-2 overflow-hidden">
@@ -232,13 +218,13 @@ export default function OutputPanel({
           </div>
 
           <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between">
-            <div className="text-xs text-slate-400 font-medium">Afet Çantası Hazırlık Durumu</div>
+            <div className="text-xs text-slate-400 font-medium">Emergency Bag Readiness</div>
             <div className="flex items-baseline gap-2 mt-1">
               <span className="text-2xl sm:text-3xl font-black text-blue-400">
                 {completedCount} / {totalItems}
               </span>
               <span className="text-xs font-bold text-slate-300">
-                (%{completionPercentage})
+                ({completionPercentage}%)
               </span>
             </div>
             <div className="w-full bg-slate-800 rounded-full h-2 mt-2 overflow-hidden">
@@ -250,13 +236,13 @@ export default function OutputPanel({
           </div>
         </div>
 
-        {/* Özet Metni */}
+        {/* Summary Text */}
         <p className="text-xs sm:text-sm text-slate-300 leading-relaxed bg-slate-950/60 p-3.5 rounded-xl border border-slate-800">
-          <span className="font-bold text-white">Yapay Zekâ Durum Değerlendirmesi: </span>
+          <span className="font-bold text-white">AI Comprehensive Assessment: </span>
           {result.summary}
         </p>
 
-        {/* SDG Etki Çubuğu */}
+        {/* SDG Alignment Bar */}
         <div className="p-3 rounded-xl bg-gradient-to-r from-amber-950/30 via-slate-950 to-emerald-950/30 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2">
             <span className="px-2 py-0.5 rounded font-black text-[10px] bg-[#FD9D24] text-slate-950">
@@ -273,7 +259,7 @@ export default function OutputPanel({
         </div>
       </div>
 
-      {/* KART 1: BÖLGESEL VE YAPISAL AFET ÖNCELİK MATRİSİ */}
+      {/* CARD 1: REGIONAL & STRUCTURAL HAZARD PRIORITY MATRIX */}
       <div className="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800 shadow-xl space-y-4">
         <div className="flex items-center gap-3">
           <div className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400">
@@ -281,18 +267,18 @@ export default function OutputPanel({
           </div>
           <div>
             <h3 className="text-base font-bold text-white flex items-center gap-2">
-              Kart 1: Bölgesel ve Yapısal Afet Öncelik Matrisi
+              Card 1: Regional & Structural Hazard Priority Matrix
             </h3>
             <p className="text-xs text-slate-400">
-              İlçe jeolojisi, fay mesafesi, bina yapım yılı ve kat ivmesine göre önceliklendirilmiş tehlikeler
+              Prioritized hazards based on district geology, fault distance, building era, and inter-story peak acceleration
             </p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 gap-3">
           {result.disasterMatrix.map((hazard) => {
-            const isHigh = hazard.riskLevel === "YÜKSEK";
-            const isMedium = hazard.riskLevel === "ORTA";
+            const isHigh = hazard.riskLevel === "HIGH" || hazard.riskLevel === "YÜKSEK";
+            const isMedium = hazard.riskLevel === "MEDIUM" || hazard.riskLevel === "ORTA";
             return (
               <div
                 key={hazard.rank}
@@ -315,23 +301,23 @@ export default function OutputPanel({
                         ? "bg-amber-500/15 text-amber-400 border-amber-500/30"
                         : "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
                     }`}>
-                      {hazard.riskLevel} RİSK
+                      {hazard.riskLevel} RISK
                     </span>
                     <span className="text-xs font-mono text-slate-400 font-bold">
-                      %{hazard.probabilityScore} Olasılık
+                      {hazard.probabilityScore}% Probability
                     </span>
                   </div>
                 </div>
 
                 <div className="text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-2.5 rounded-lg border border-slate-800/80">
-                  <span className="font-semibold text-slate-400">Jeolojik & Yapısal Gerekçe: </span>
+                  <span className="font-semibold text-slate-400">Geological & Structural Rationale: </span>
                   {hazard.geologicalReasoning}
                 </div>
 
                 <div className="flex items-start gap-2 text-xs text-emerald-300 bg-emerald-950/20 border border-emerald-500/20 p-2 rounded-lg">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-emerald-200">Acil Eylem Adımı: </span>
+                    <span className="font-bold text-emerald-200">Immediate Action Step: </span>
                     {hazard.immediateAction}
                   </div>
                 </div>
@@ -340,7 +326,7 @@ export default function OutputPanel({
           })}
         </div>
 
-        {/* TARİHSEL ZEMİN VE MİKROBÖLGELEME ANALİZİ (Micro-Zonation) */}
+        {/* HISTORICAL GROUND MEMORY & MICRO-ZONATION ANALYSIS */}
         {result.historicalGroundMemory && (
           <div className="p-4 rounded-xl bg-gradient-to-br from-amber-950/25 via-slate-900 to-slate-900 border border-amber-500/30 space-y-3 mt-3">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-2.5">
@@ -350,10 +336,10 @@ export default function OutputPanel({
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                    Tarihsel Zemin & Mikrobölgeleme Analizi (Historical Ground Memory)
+                    Historical Ground Memory & Micro-Zonation Analysis
                   </h4>
                   <span className="text-[11px] text-slate-400">
-                    Zemin Türü: {result.historicalGroundMemory.soilType}
+                    Soil Classification: {result.historicalGroundMemory.soilType}
                   </span>
                 </div>
               </div>
@@ -369,7 +355,7 @@ export default function OutputPanel({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
               <div className="p-3 rounded-lg bg-slate-950/70 border border-slate-800 text-slate-300 space-y-1">
                 <span className="font-bold text-amber-300 flex items-center gap-1">
-                  <Activity className="w-3.5 h-3.5" /> Tarihsel Zemin Katmanı & Geçmişi:
+                  <Activity className="w-3.5 h-3.5" /> Historical Soil Stratum & Geo-Memory:
                 </span>
                 <p className="text-[11px] leading-relaxed text-slate-300/90">
                   {result.historicalGroundMemory.historicalFact}
@@ -378,7 +364,7 @@ export default function OutputPanel({
 
               <div className="p-3 rounded-lg bg-slate-950/70 border border-slate-800 text-slate-300 space-y-1">
                 <span className="font-bold text-rose-300 flex items-center gap-1">
-                  <AlertTriangle className="w-3.5 h-3.5" /> Sismik Büyütme & Sıvılaşma Uyarısı:
+                  <AlertTriangle className="w-3.5 h-3.5" /> Seismic Amplification & Liquefaction Advisory:
                 </span>
                 <p className="text-[11px] leading-relaxed text-slate-300/90">
                   {result.historicalGroundMemory.amplificationRisk}
@@ -389,7 +375,7 @@ export default function OutputPanel({
         )}
       </div>
 
-      {/* YENİ: AFET ANI EYLEM SİMÜLASYONU (TIMELINE) */}
+      {/* CRISIS ACTION TIMELINE SIMULATION */}
       {result.crisisTimeline && (
         <div className="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800 shadow-xl space-y-5">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-800/80">
@@ -399,28 +385,28 @@ export default function OutputPanel({
               </div>
               <div>
                 <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  Afet Anı Eylem Simülasyonu (Zaman Çizelgesi)
+                  Crisis Action Timeline Simulation
                 </h3>
                 <p className="text-xs text-slate-400">
-                  Sarsıntı/taşkın anından ilk 72 saate kadar adım adım hayat kurtaran kritik hareket planı
+                  Step-by-step lifesaving operational roadmap from initial shock/inrush to 72 hours
                 </p>
               </div>
             </div>
             <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 self-start sm:self-auto">
-              Kritik Hayatta Kalma Protokolü
+              Critical Survival Protocol
             </span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             
-            {/* Faz 1: T+0 - 60 Saniye */}
+            {/* Phase 1: T+0 - 60 Seconds */}
             <div className="p-4 rounded-xl bg-slate-900/90 border border-rose-500/30 space-y-3 flex flex-col justify-between">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="px-2 py-0.5 rounded text-[10px] font-black tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/40">
                     {result.crisisTimeline.phase60s.timeframe}
                   </span>
-                  <span className="text-[11px] text-slate-400 font-bold">1. Aşama</span>
+                  <span className="text-[11px] text-slate-400 font-bold">Phase 1</span>
                 </div>
                 <h4 className="text-sm font-bold text-white">
                   {result.crisisTimeline.phase60s.title}
@@ -437,7 +423,7 @@ export default function OutputPanel({
 
               <div className="space-y-2 pt-2 border-t border-slate-800/80">
                 <div className="p-2 rounded-lg bg-slate-950 text-[11px] text-pink-300 border border-pink-500/20">
-                  <span className="font-bold block text-pink-200">Kırılgan Birey Koruma:</span>
+                  <span className="font-bold block text-pink-200">Vulnerable Profile Protection:</span>
                   {result.crisisTimeline.phase60s.vulnerableCare}
                 </div>
                 <div className="text-[10px] text-rose-400 font-semibold italic">
@@ -446,14 +432,14 @@ export default function OutputPanel({
               </div>
             </div>
 
-            {/* Faz 2: T+1 - 15 Dakika */}
+            {/* Phase 2: T+1 - 15 Minutes */}
             <div className="p-4 rounded-xl bg-slate-900/90 border border-amber-500/30 space-y-3 flex flex-col justify-between">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="px-2 py-0.5 rounded text-[10px] font-black tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">
                     {result.crisisTimeline.phase15m.timeframe}
                   </span>
-                  <span className="text-[11px] text-slate-400 font-bold">2. Aşama</span>
+                  <span className="text-[11px] text-slate-400 font-bold">Phase 2</span>
                 </div>
                 <h4 className="text-sm font-bold text-white">
                   {result.crisisTimeline.phase15m.title}
@@ -470,7 +456,7 @@ export default function OutputPanel({
 
               <div className="space-y-2 pt-2 border-t border-slate-800/80">
                 <div className="p-2 rounded-lg bg-slate-950 text-[11px] text-amber-300 border border-amber-500/20">
-                  <span className="font-bold block text-amber-200">Kırılgan Birey Tahliyesi:</span>
+                  <span className="font-bold block text-amber-200">Vulnerable Profile Evacuation:</span>
                   {result.crisisTimeline.phase15m.vulnerableCare}
                 </div>
                 <div className="text-[10px] text-amber-400 font-semibold italic">
@@ -479,14 +465,14 @@ export default function OutputPanel({
               </div>
             </div>
 
-            {/* Faz 3: T+1 - 72 Saat */}
+            {/* Phase 3: T+1 - 72 Hours */}
             <div className="p-4 rounded-xl bg-slate-900/90 border border-emerald-500/30 space-y-3 flex flex-col justify-between">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="px-2 py-0.5 rounded text-[10px] font-black tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                     {result.crisisTimeline.phase72h.timeframe}
                   </span>
-                  <span className="text-[11px] text-slate-400 font-bold">3. Aşama</span>
+                  <span className="text-[11px] text-slate-400 font-bold">Phase 3</span>
                 </div>
                 <h4 className="text-sm font-bold text-white">
                   {result.crisisTimeline.phase72h.title}
@@ -503,7 +489,7 @@ export default function OutputPanel({
 
               <div className="space-y-2 pt-2 border-t border-slate-800/80">
                 <div className="p-2 rounded-lg bg-slate-950 text-[11px] text-emerald-300 border border-emerald-500/20">
-                  <span className="font-bold block text-emerald-200">Medikal & Su Kotası:</span>
+                  <span className="font-bold block text-emerald-200">Medical & Water Rations:</span>
                   {result.crisisTimeline.phase72h.vulnerableCare}
                 </div>
                 <div className="text-[10px] text-emerald-400 font-semibold italic">
@@ -516,7 +502,7 @@ export default function OutputPanel({
         </div>
       )}
 
-      {/* KART 2: ODA İÇİ GÜVENLİK, SABİTLEME VE YAŞAM ÜÇGENİ REHBERİ */}
+      {/* CARD 2: ROOM SAFETY, FURNITURE ANCHORING & LIFE TRIANGLE GUIDE */}
       <div className="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800 shadow-xl space-y-4">
         <div className="flex items-center gap-3">
           <div className="p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400">
@@ -524,69 +510,72 @@ export default function OutputPanel({
           </div>
           <div>
             <h3 className="text-base font-bold text-white flex items-center gap-2">
-              Kart 2: Oda İçi Güvenlik, Sabitleme ve Yaşam Üçgeni Rehberi
+              Card 2: Room Safety, Furniture Anchoring & Life Triangle Guide
             </h3>
             <p className="text-xs text-slate-400">
-              Yapay zekâ oda görseli ve risk etiketleri üzerinden mekanik ankraj ve güvenli sığınma koordinatları
+              Mechanical anchoring specifications and designated shelter coordinates derived from visual analysis and risk tags
             </p>
           </div>
         </div>
 
-        {/* Eşya Sabitleme Planı */}
+        {/* Furniture Fixing Plan */}
         <div className="space-y-2">
           <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-            Eşya Sabitleme ve Ankraj Talimatları
+            Furniture Anchoring & Mechanical Fastening Protocols
           </label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {result.roomSafetyGuide.furnitureFixingPlan.map((fix, idx) => (
-              <div 
-                key={idx}
-                className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-bold text-white">{fix.item}</span>
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                      fix.urgency === "ACİL" 
-                        ? "bg-rose-500/20 text-rose-300 border border-rose-500/40" 
-                        : "bg-amber-500/20 text-amber-300 border border-amber-500/40"
-                    }`}>
-                      {fix.urgency}
-                    </span>
+            {result.roomSafetyGuide.furnitureFixingPlan.map((fix, idx) => {
+              const isUrgent = fix.urgency === "CRITICAL" || fix.urgency === "ACİL";
+              return (
+                <div 
+                  key={idx}
+                  className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-bold text-white">{fix.item}</span>
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                        isUrgent 
+                          ? "bg-rose-500/20 text-rose-300 border border-rose-500/40" 
+                          : "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                      }`}>
+                        {fix.urgency}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 leading-tight">
+                      {fix.riskDescription}
+                    </p>
                   </div>
-                  <p className="text-[11px] text-slate-400 leading-tight">
-                    {fix.riskDescription}
-                  </p>
-                </div>
 
-                <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-[11px] text-slate-200">
-                  <span className="font-semibold text-purple-300 block mb-0.5">Sabitleme Yöntemi:</span>
-                  {fix.fixingMethod}
+                  <div className="p-2 rounded-lg bg-slate-950 border border-slate-800 text-[11px] text-slate-200">
+                    <span className="font-semibold text-purple-300 block mb-0.5">Anchoring Specification:</span>
+                    {fix.fixingMethod}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-        {/* Yatak Konumu Tavsiyesi */}
+        {/* Bed Relocation Advisory */}
         <div className="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/30 text-xs text-amber-200 space-y-1">
           <div className="font-bold text-amber-300 flex items-center gap-1.5">
             <AlertTriangle className="w-4 h-4" />
-            Yatak Konumlandırma ve Cam Güvenliği Tavsiyesi:
+            Bed Relocation & Window Shatter Advisory:
           </div>
           <p className="leading-relaxed">
             {result.roomSafetyGuide.bedRelocationAdvice}
           </p>
         </div>
 
-        {/* Yaşam Üçgeni ve Afet Çantası Konumu */}
+        {/* Life Triangle & Bag Mount */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-          {/* Yaşam Üçgeni */}
+          {/* Life Triangle */}
           <div className="p-4 rounded-xl bg-gradient-to-br from-blue-950/30 to-slate-900 border border-blue-500/30 space-y-2">
             <div className="flex items-center gap-2 text-blue-400">
               <Compass className="w-4 h-4" />
               <span className="text-xs font-bold uppercase tracking-wider">
-                Tespit Edilen En Güvenli Yaşam Üçgeni (Life Triangle)
+                Designated Life Triangle (Drop-Cover-Hold On Spot)
               </span>
             </div>
             <div className="text-sm font-bold text-white">
@@ -596,35 +585,35 @@ export default function OutputPanel({
               {result.roomSafetyGuide.lifeTriangleSpot.coordinatesDescription}
             </p>
             <div className="text-[11px] text-blue-300/80 bg-blue-950/40 p-2 rounded-lg border border-blue-500/20">
-              <span className="font-semibold">Mekanik Güvenlik İlkesi: </span>
+              <span className="font-semibold">Structural Mechanics Principle: </span>
               {result.roomSafetyGuide.lifeTriangleSpot.safetyRationale}
             </div>
           </div>
 
-          {/* Afet Çantası Konumu */}
+          {/* Emergency Bag Mount */}
           <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-950/30 to-slate-900 border border-emerald-500/30 space-y-2">
             <div className="flex items-center gap-2 text-emerald-400">
               <BookmarkCheck className="w-4 h-4" />
               <span className="text-xs font-bold uppercase tracking-wider">
-                Acil Durum Çantası Saklama Noktası
+                Emergency Bag Staging Mount
               </span>
             </div>
             <div className="text-sm font-bold text-white">
-              Kapı Çıkış Güzergahı
+              Exit Corridor Doorway
             </div>
             <p className="text-xs text-slate-300 leading-relaxed">
               {result.roomSafetyGuide.emergencyBagLocation}
             </p>
             <div className="text-[11px] text-emerald-300/80 bg-emerald-950/40 p-2 rounded-lg border border-emerald-500/20">
-              <span className="font-semibold">Kritik Kural: </span>
-              Çanta asla gardırop arkasında veya yüksek raflarda saklanmamalıdır; karanlıkta 5 saniye içinde kavranabilir olmalıdır.
+              <span className="font-semibold">Critical Rule: </span>
+              Never stash the emergency bag inside deep wardrobes or high shelves; it must be grab-and-go accessible within 5 seconds in pitch darkness.
             </div>
           </div>
         </div>
 
       </div>
 
-      {/* KART 3: HİPER-KİŞİSELLEŞTİRİLMİŞ DİNAMİK AFET ÇANTASI (CHECKLIST) */}
+      {/* CARD 3: HYPER-PERSONALIZED DYNAMIC EMERGENCY BAG (CHECKLIST) */}
       <div className="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800 shadow-xl space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -633,24 +622,24 @@ export default function OutputPanel({
             </div>
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
-                Kart 3: Hiper-Kişiselleştirilmiş Dinamik Afet Çantası
+                Card 3: Hyper-Personalized Dynamic Emergency Bag
               </h3>
               <p className="text-xs text-slate-400">
-                Hanedeki bireylere (bebek, yaşlı, kronik hasta, evcil hayvan) göre dinamik üretilen interaktif kontrol listesi
+                Interactive checklist dynamically generated for household profiles (infant, elderly, chronic illness, pet)
               </p>
             </div>
           </div>
 
           <div className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-blue-600/20 border border-blue-500/30 text-blue-300">
-            {completedCount} / {totalItems} Tamamlandı
+            {completedCount} / {totalItems} Completed
           </div>
         </div>
 
-        {/* Tıklanabilir Liste */}
+        {/* Clickable Checklist */}
         <div className="space-y-2">
           {result.emergencyBagChecklist.map((item) => {
             const isChecked = Boolean(checkedItems[item.id]);
-            const isSpecialGroup = item.category !== "Genel";
+            const isSpecialGroup = item.category !== "General" && item.category !== "Genel";
 
             return (
               <div
@@ -681,26 +670,26 @@ export default function OutputPanel({
                       {item.item}
                     </span>
 
-                    {/* Kategori Rozeti */}
+                    {/* Category Badge */}
                     <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
-                      item.category.includes("Bebek")
+                      item.category.includes("Infant") || item.category.includes("Bebek")
                         ? "bg-pink-500/10 text-pink-300 border-pink-500/30"
-                        : item.category.includes("Yaşlı")
+                        : item.category.includes("Elderly") || item.category.includes("Yaşlı")
                         ? "bg-amber-500/10 text-amber-300 border-amber-500/30"
-                        : item.category.includes("Hasta")
+                        : item.category.includes("Chronic") || item.category.includes("Hasta")
                         ? "bg-teal-500/10 text-teal-300 border-teal-500/30"
-                        : item.category.includes("Engelli")
+                        : item.category.includes("Mobility") || item.category.includes("Engelli")
                         ? "bg-indigo-500/10 text-indigo-300 border-indigo-500/30"
-                        : item.category.includes("Evcil")
+                        : item.category.includes("Pet") || item.category.includes("Evcil")
                         ? "bg-purple-500/10 text-purple-300 border-purple-500/30"
                         : "bg-slate-800 text-slate-300 border-slate-700"
                     }`}>
                       {item.category}
                     </span>
 
-                    {/* Öncelik Rozeti */}
+                    {/* Priority Badge */}
                     <span className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${
-                      item.priority === "Kritik" 
+                      item.priority.toLowerCase() === "critical" || item.priority === "Kritik" 
                         ? "bg-rose-500/20 text-rose-300" 
                         : "bg-blue-500/20 text-blue-300"
                     }`}>
@@ -718,11 +707,11 @@ export default function OutputPanel({
         </div>
 
         <p className="text-[11px] text-slate-400 italic">
-          İpucu: Malzemeleri çantanıza koydukça üzerlerine tıklayarak işaretleyin; dirençlilik skorunuz dinamik olarak artsın.
+          Tip: Check off items as you pack them into your bag; your resilience score increases dynamically.
         </p>
       </div>
 
-      {/* KART 4: ETİK GÜVENLİK VE SORUMLULUK BİLDİRİMİ */}
+      {/* CARD 4: ETHICAL GUARDRAILS, LEGAL DISCLAIMER & INSTITUTIONAL PROTOCOLS */}
       <div className="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800 shadow-xl space-y-4">
         <div className="flex items-center gap-3">
           <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
@@ -730,10 +719,10 @@ export default function OutputPanel({
           </div>
           <div>
             <h3 className="text-base font-bold text-white flex items-center gap-2">
-              Kart 4: Etik Güvenlik, Yasal Sorumluluk ve Resmi Kurum Protokolü
+              Card 4: Ethical Guardrails, Legal Disclaimer & Institutional Protocols
             </h3>
             <p className="text-xs text-slate-400">
-              Yapay zekâ etik güvenlik katmanı, halüsinasyon koruması ve resmi referanslar
+              Ethical safety layer, anti-hallucination guardrails, and authorized institutional references
             </p>
           </div>
         </div>
@@ -742,27 +731,27 @@ export default function OutputPanel({
           <div className="flex items-start gap-2.5">
             <Info className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
             <div>
-              <span className="font-bold text-slate-100">Etik Yasal Çekince (Disclaimer): </span>
+              <span className="font-bold text-slate-100">Ethical Legal Disclaimer: </span>
               {result.ethicalGuardrails.disclaimer}
             </div>
           </div>
 
           <div className="border-t border-slate-800/80 pt-2 grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px]">
             <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
-              <span className="font-bold text-blue-300 block mb-1">İnşaat Mühendisliği Sınırı:</span>
+              <span className="font-bold text-blue-300 block mb-1">Civil Engineering Boundary:</span>
               {result.ethicalGuardrails.engineeringNote}
             </div>
             <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800">
-              <span className="font-bold text-teal-300 block mb-1">Tıbbi Reçete Sınırı:</span>
+              <span className="font-bold text-teal-300 block mb-1">Medical Prescription Boundary:</span>
               {result.ethicalGuardrails.medicalNote}
             </div>
           </div>
         </div>
 
-        {/* Resmi Kaynaklar */}
+        {/* Official Sources */}
         <div className="space-y-1.5">
           <span className="text-xs font-semibold text-slate-400 block">
-            Referans Alınan Resmi Kurumlar & Uluslararası Protokoller:
+            Referenced Official Authorities & International Protocols:
           </span>
           <div className="flex flex-wrap gap-2">
             {result.ethicalGuardrails.officialSources.map((src, i) => (

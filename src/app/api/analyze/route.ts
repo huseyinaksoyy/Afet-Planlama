@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
 
     if (!input || !input.city || !input.district) {
       return NextResponse.json(
-        { error: "Geçersiz veri: İl ve ilçe seçimi zorunludur." },
+        { error: "Invalid data: City and district selection are required." },
         { status: 400 }
       );
     }
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   } catch (err: unknown) {
     console.error("API /api/analyze Error:", err);
     return NextResponse.json(
-      { error: (err as Error)?.message || "Analiz sırasında bir hata oluştu." },
+      { error: (err as Error)?.message || "An error occurred during disaster analysis." },
       { status: 500 }
     );
   }

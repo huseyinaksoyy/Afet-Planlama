@@ -21,8 +21,7 @@ import {
   Waves, 
   Mountain, 
   Flame, 
-  Activity,
-  Layers
+  Activity
 } from "lucide-react";
 import { UserInput } from "@/types/disaster";
 import { 
@@ -98,7 +97,7 @@ export default function InputPanel({
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      alert("Lütfen geçerli bir resim dosyası seçiniz (JPEG, PNG).");
+      alert("Please select a valid image file (JPEG, PNG).");
       return;
     }
 
@@ -154,14 +153,14 @@ export default function InputPanel({
           <div>
             <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-ping" />
-              Akıllı Veri Giriş Paneli
+              Smart Data Input Panel
             </h2>
             <p className="text-xs text-slate-400">
-              3 adımda hanenizin ve odanızın afet profilini tanımlayın
+              Configure your household and room disaster parameters in 3 steps
             </p>
           </div>
           <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
-            Adım {activeStep} / 3
+            Step {activeStep} / 3
           </span>
         </div>
 
@@ -176,7 +175,7 @@ export default function InputPanel({
                 : "bg-slate-800/60 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
             }`}
           >
-            1. Konum & Bina
+            1. Location & Building
           </button>
           <button
             type="button"
@@ -187,7 +186,7 @@ export default function InputPanel({
                 : "bg-slate-800/60 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
             }`}
           >
-            2. Hane & Kırılgan
+            2. Household & Needs
           </button>
           <button
             type="button"
@@ -198,21 +197,21 @@ export default function InputPanel({
                 : "bg-slate-800/60 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
             }`}
           >
-            3. Oda Analizi
+            3. Room Hazards
           </button>
         </div>
       </div>
 
-      {/* ADIM 1: KONUM VE BİNA */}
+      {/* STEP 1: LOCATION & BUILDING */}
       {activeStep === 1 && (
         <div className="space-y-5 animate-in fade-in duration-200">
           
-          {/* İl ve İlçe Seçimi */}
+          {/* City and District Selection */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-blue-400" />
-                İl
+                Province / City
               </label>
               <select
                 value={input.city}
@@ -230,7 +229,7 @@ export default function InputPanel({
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
                 <Building className="w-3.5 h-3.5 text-blue-400" />
-                İlçe
+                District
               </label>
               <select
                 value={input.district}
@@ -246,15 +245,15 @@ export default function InputPanel({
             </div>
           </div>
 
-          {/* Mahalle / Sokak ve Tarihsel Zemin Hafızası */}
+          {/* Neighborhood / Street & Historical Ground Memory */}
           <div className="space-y-2 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
             <div className="flex items-center justify-between">
               <label className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-amber-400" />
-                Mahalle / Sokak veya Bölge Detayı
+                Neighborhood / Street or Area Detail
               </label>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">
-                Mikrobölgeleme
+                Micro-Zonation
               </span>
             </div>
             
@@ -262,14 +261,14 @@ export default function InputPanel({
               type="text"
               value={input.neighborhood || ""}
               onChange={(e) => onChange({ ...input, neighborhood: e.target.value })}
-              placeholder="Örn: Denizköşkler Mah. / Cendere Vadisi / Yalı Cad."
+              placeholder="e.g., Denizköşkler / Cendere Valley / Coastal Ave."
               className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
             />
 
-            {/* Tarihsel Zemin Hafızası Çipleri */}
+            {/* Historical Ground Memory Chips */}
             <div className="pt-1.5 space-y-1.5">
               <span className="text-[11px] text-slate-400 font-medium block">
-                Tarihsel Zemin / Jeolojik Hafıza Etiketi:
+                Historical Soil / Geological Memory Preset:
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {HISTORICAL_GROUND_PRESETS.map((chip) => {
@@ -298,10 +297,10 @@ export default function InputPanel({
             </div>
           </div>
 
-          {/* Bina Yaşı Kartları */}
+          {/* Building Age Cards */}
           <div className="space-y-2">
             <label className="text-xs font-semibold text-slate-300 block">
-              Bina Yapım Yılı & Yönetmelik Dönemi
+              Construction Era & Building Code Period
             </label>
             <div className="space-y-2">
               {BUILDING_AGE_OPTIONS.map((opt) => {
@@ -331,14 +330,14 @@ export default function InputPanel({
             </div>
           </div>
 
-          {/* Kat Durumu ve Kat Numarası */}
+          {/* Floor Level & Number */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs font-semibold text-slate-300">
-                Kat Seviyesi
+                Floor Level
               </label>
               <div className="flex items-center gap-1.5 text-xs text-slate-400">
-                <span>Kat No:</span>
+                <span>Floor No:</span>
                 <input
                   type="number"
                   min="-2"
@@ -372,10 +371,10 @@ export default function InputPanel({
             </div>
           </div>
 
-          {/* Çevre Riskleri */}
+          {/* Proximity Environmental Hazards */}
           <div className="space-y-2">
             <label className="text-xs font-semibold text-slate-300 block">
-              Yakın Çevresel ve Jeolojik Risk Faktörleri (Çoklu Seçilebilir)
+              Proximity Environmental & Geological Hazards (Multi-Select)
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {ENVIRONMENT_RISK_OPTIONS.map((env) => {
@@ -407,25 +406,25 @@ export default function InputPanel({
               onClick={() => setActiveStep(2)}
               className="px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-colors"
             >
-              Devam Et: Hane Halkı &rarr;
+              Continue: Household &rarr;
             </button>
           </div>
         </div>
       )}
 
-      {/* ADIM 2: HANE HALKI & KIRILGAN GRUPLAR */}
+      {/* STEP 2: HOUSEHOLD & VULNERABILITIES */}
       {activeStep === 2 && (
         <div className="space-y-5 animate-in fade-in duration-200">
           
-          {/* Kişi Sayısı */}
+          {/* Household Member Count */}
           <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between">
             <div>
               <div className="text-sm font-bold text-white flex items-center gap-2">
                 <Users className="w-4 h-4 text-blue-400" />
-                Toplam Hane Birey Sayısı
+                Total Household Member Count
               </div>
               <div className="text-xs text-slate-400">
-                Acil çanta su ve gıda stoğu kişi sayısına göre hesaplanır
+                Disaster kit water and nutrition rations are calculated per person
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -449,18 +448,18 @@ export default function InputPanel({
             </div>
           </div>
 
-          {/* Kırılgan Gruplar Seçimi */}
+          {/* Vulnerable Groups Selection */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs font-semibold text-slate-300">
-                Hanedeki Özel İhtiyaç & Kırılgan Bireyler
+                Special Needs & Vulnerable Household Profiles
               </label>
               <span className="text-[11px] text-amber-400 font-medium">
-                SDG 11.5 Odak Alanı
+                SDG 11.5 Focus Area
               </span>
             </div>
             <p className="text-[11px] text-slate-400 leading-normal">
-              Seçilen her profil için Gemini AI afet çantasına ve tahliye planına hayati özel kalemler ekler.
+              For each selected profile, Gemini AI inserts life-critical items into the emergency bag and evacuation timeline.
             </p>
 
             <div className="space-y-2 pt-1">
@@ -484,7 +483,7 @@ export default function InputPanel({
                         <span className="text-xs font-bold text-white">{vg.label}</span>
                         {isSelected && (
                           <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white/20 text-white">
-                            Seçildi
+                            Selected
                           </span>
                         )}
                       </div>
@@ -504,24 +503,24 @@ export default function InputPanel({
               onClick={() => setActiveStep(1)}
               className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-colors"
             >
-              &larr; Geri: Konum
+              &larr; Back: Location
             </button>
             <button
               type="button"
               onClick={() => setActiveStep(3)}
               className="px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-colors"
             >
-              Devam Et: Oda Analizi &rarr;
+              Continue: Room Hazards &rarr;
             </button>
           </div>
         </div>
       )}
 
-      {/* ADIM 3: ODA İÇİ RİSK TANIMLAMA (HİBRİT MOD) */}
+      {/* STEP 3: INDOOR ROOM HAZARDS (HYBRID MODE) */}
       {activeStep === 3 && (
         <div className="space-y-5 animate-in fade-in duration-200">
           
-          {/* Sekme Değiştirici: Fotoğraf vs Etiketler */}
+          {/* Mode Switcher: Photo vs Preset Tags */}
           <div className="p-1 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-1">
             <button
               type="button"
@@ -533,7 +532,7 @@ export default function InputPanel({
               }`}
             >
               <Camera className="w-3.5 h-3.5" />
-              Sekme A: Multimodal Fotoğraf
+              Tab A: Multimodal Photo
             </button>
             <button
               type="button"
@@ -545,11 +544,11 @@ export default function InputPanel({
               }`}
             >
               <Tags className="w-3.5 h-3.5" />
-              Sekme B: Hızlı Risk Etiketleri
+              Tab B: Rapid Hazard Tags
             </button>
           </div>
 
-          {/* Sekme A: Multimodal Fotoğraf */}
+          {/* Tab A: Multimodal Photo */}
           {input.roomMode === "photo" && (
             <div className="space-y-3">
               <input
@@ -569,10 +568,10 @@ export default function InputPanel({
                     <Upload className="w-6 h-6" />
                   </div>
                   <div className="text-xs font-bold text-white mb-1">
-                    Yatak Odanızın veya Salonunuzun Fotoğrafını Yükleyin
+                    Upload a Photo of Your Bedroom or Living Area
                   </div>
                   <p className="text-[11px] text-slate-400 max-w-xs mx-auto">
-                    Gemini Multimodal Vision, gardırop, pencere ve kaçış güzergahındaki devrilme risklerini fotoğraftan otomatik analiz eder.
+                    Gemini Multimodal Vision automatically detects toppling wardrobes, shattering glass, and exit obstructions from your room photo.
                   </p>
                 </div>
               ) : (
@@ -580,18 +579,18 @@ export default function InputPanel({
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={input.roomPhotoPreview}
-                    alt="Oda Fotoğrafı"
+                    alt="Room Photo"
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end justify-between p-3">
                     <span className="text-[11px] font-semibold text-purple-300 bg-purple-950/80 px-2.5 py-1 rounded-md border border-purple-500/40">
-                      Gemini Vision İçin Hazır
+                      Ready for Gemini Vision
                     </span>
                     <button
                       type="button"
                       onClick={removePhoto}
                       className="p-1.5 rounded-lg bg-rose-600/80 hover:bg-rose-600 text-white transition-colors"
-                      title="Fotoğrafı Kaldır"
+                      title="Remove Photo"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -600,16 +599,16 @@ export default function InputPanel({
               )}
 
               <p className="text-[10px] text-slate-400 italic">
-                İpucu: Yatağın konumunu, gardırobu ve ana pencereyi aynı karede gösteren geniş açılı bir fotoğraf en yüksek doğruluğu verir.
+                Tip: A wide-angle photo capturing bed placement, tall wardrobes, and windows in a single frame yields optimal detection accuracy.
               </p>
             </div>
           )}
 
-          {/* Sekme B: Hızlı Risk Etiketleri */}
+          {/* Tab B: Rapid Hazard Tags */}
           {input.roomMode === "tags" && (
             <div className="space-y-2">
               <label className="text-xs font-semibold text-slate-300 block">
-                Odanızdaki Fiziksel Riskleri İşaretleyin:
+                Select Physical Hazards Present in Your Room:
               </label>
               <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
                 {ROOM_RISK_PRESET_TAGS.map((tag) => {
@@ -637,16 +636,16 @@ export default function InputPanel({
             </div>
           )}
 
-          {/* Kullanıcı Notu */}
+          {/* Custom Notes */}
           <div className="space-y-1">
             <label className="text-xs font-semibold text-slate-300">
-              Özel Durum veya Ek Not (İsteğe Bağlı)
+              Specific Condition or Custom Notes (Optional)
             </label>
             <textarea
               rows={2}
               value={input.customNotes || ""}
               onChange={(e) => onChange({ ...input, customNotes: e.target.value })}
-              placeholder="Örn: Evde astım hastası var, gece panik atağı eğilimi mevcut..."
+              placeholder="e.g., Resident has asthma, nocturnal anxiety, mobility limitation..."
               className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"
             />
           </div>
@@ -657,16 +656,16 @@ export default function InputPanel({
               onClick={() => setActiveStep(2)}
               className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-colors"
             >
-              &larr; Geri: Hane
+              &larr; Back: Household
             </button>
             <span className="text-[11px] text-slate-400 self-center">
-              Tüm bilgiler hazır
+              All parameters configured
             </span>
           </div>
         </div>
       )}
 
-      {/* CTA: Analiz Butonu */}
+      {/* CTA: Analysis Button */}
       <div className="pt-4 border-t border-slate-800/80">
         <button
           type="button"
@@ -681,18 +680,18 @@ export default function InputPanel({
           {isLoading ? (
             <>
               <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
-              <span>{loadingStepText || "Yapay Zekâ Analiz Ediyor..."}</span>
+              <span>{loadingStepText || "AI Analyzing Disaster Risks..."}</span>
             </>
           ) : (
             <>
               <Sparkles className="w-5 h-5 text-amber-300 animate-pulse" />
-              <span>Yapay Zekâ ile Analiz Et & Eylem Planı Üret</span>
+              <span>Analyze with AI & Generate Action Plan</span>
             </>
           )}
         </button>
 
         <p className="text-[10px] text-center text-slate-400 mt-2">
-          AFAD & BM Sendai Çerçevesi standartlarında Chain-of-Thought doğrulamasıyla çalışır.
+          Powered by AFAD & UN Sendai Framework standards with Chain-of-Thought verification.
         </p>
       </div>
 
